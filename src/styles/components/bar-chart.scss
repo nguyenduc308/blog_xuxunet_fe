@@ -1,0 +1,85 @@
+.bar-chart-wrapper {
+    .bar-chart {
+        display: flex;
+        align-items: flex-end;
+        height: 500px;
+        padding-top: 100px;
+        padding-right: 200px;
+        border-left: 1px solid currentColor;
+        border-bottom: 1px solid currentColor;
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    
+        .chart-line {
+            cursor: pointer;
+            width: 50px;
+            background: currentColor;
+            margin-left: 10px;
+            position: relative;
+            transition: height 0.5s ease;
+
+            @media screen and (max-width: #{$md - 1px}) {
+                width: 20px;
+                margin-left: 5px;
+            }
+
+            .desc {
+                visibility: hidden;
+                position: absolute;
+                background: #ffa708;
+                color: #333;
+                border-radius: 4px;
+                border: 1px solid #efefef;
+                bottom: calc(100% + 10px);
+                width: max-content;
+                padding: 10px;
+                z-index: 100;
+                box-shadow: 1px 1px 3px #ccc;
+            }
+            
+            &:hover {
+                background: rgb(255 167 8);
+
+                .desc {
+                    visibility: visible;
+                }
+            }
+    
+            .num {
+                width: 100%;
+                font-size: 12px;
+                position: absolute;
+                bottom: 100%;
+                user-select: none;
+                text-align: center;
+                @media screen and (max-width: #{$md - 1px}) {
+                    display: none;
+                }
+            }
+        }
+    }
+    
+    .bar-chart-bottom {
+        display: flex;
+        
+        .bar-chart-row-item {
+            flex: 0 0 50px;
+            margin-left: 10px;
+            color: #333; 
+            user-select: none;
+            text-align: center;
+
+            @media screen and (max-width: #{$md - 1px}) {
+                flex: 0 0 20px;
+                margin-left: 5px;
+            }
+        }
+    }
+}

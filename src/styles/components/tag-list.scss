@@ -1,0 +1,17 @@
+.tag-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+
+    .tag-item {
+        padding: 4px 8px;
+        border-radius: 4px;
+        background-color: rgba(42,65,232,.07);
+        color: #2a41e8;
+        font-weight: 500;
+
+        &:not(:first-child) {
+            margin-left: 0.5rem;
+        }
+    }
+}

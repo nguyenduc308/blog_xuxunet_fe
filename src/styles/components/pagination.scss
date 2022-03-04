@@ -1,0 +1,55 @@
+.pagination-custom {
+    margin: 3rem 0;
+
+    &.pagination-center {
+        @include flex-center;
+    }
+
+    .ant-pagination {
+        display: flex;
+    }
+
+    .ant-pagination-item {
+        background: transparent;
+        height: unset;
+    }
+
+    .ant-pagination-item-link, .ant-pagination-item {
+        font-size: 18px;
+        border-radius: 4px;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        line-height: 44px;
+        display: inline-block;
+        border: none;
+
+        a {
+            outline: none;
+        }
+    }
+
+    .ant-pagination-item-active {
+        background: $primary-color;
+        padding: 0;
+        a {
+            color: #fff;
+        
+        }
+    }
+
+    .ant-pagination-item-link {
+        background-color: #f0f0f0;
+
+        &:hover {
+            background-color: #333;
+            color: #fff;
+            border: none
+        }
+        .anticon  {
+            // margin-top: 5px;
+        }
+    }
+
+ 
+}

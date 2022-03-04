@@ -1,0 +1,27 @@
+.work-wrapper {
+    background: #efefef;
+    
+    main {
+        width: 100%;
+        max-width: 1200px;
+        flex: 1;
+        display: flex;
+        .sidebar {
+            flex: 0 0 250px;
+        }
+
+        .content {
+            flex: 1;
+        }
+    }
+
+    .sidebar {
+        padding-right: 2rem;
+        
+        .sidebar-item {
+            &:not(:first-child) {
+                margin-top: 2rem;
+            }
+        }
+    }
+}

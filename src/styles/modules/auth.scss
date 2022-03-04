@@ -1,0 +1,26 @@
+.auth-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 4rem;
+
+}
+.auth-box {
+    width: 320px;
+}
+
+.auth-form-item {
+    flex-direction: column;
+    margin-bottom: 12px;
+
+    .ant-form-item-label {
+        text-align: left;
+
+    }
+}
+
+.form-submit-area {
+    margin-top: 24px;
+}

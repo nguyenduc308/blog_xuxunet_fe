@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    @media screen and (max-width: #{$md - 1}) {
+        font-size: 16px;
+    }
+}
+
+.ant-form-item-label {
+    & > label {
+        font-size: 16px;
+    }
+}
+
+[class^='ant'] {
+    font-size: 16px;
+}

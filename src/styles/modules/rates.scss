@@ -1,0 +1,16 @@
+.rates {
+
+    .controls {
+        @media screen and (min-width: $md) {
+            padding-right: 2rem;
+        }
+    }
+    .result {
+        @media screen and (max-width: #{$md - 1px}) {
+            margin-top: 2rem;
+        }
+        .table {
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,13 @@
+.admin-wrapper {
+    main {
+        max-width: 1600px;
+        display: flex;
+        aside {
+            flex: 0 0 250px;
+        }
+        .content {
+            flex: 1;
+            padding: 0 1rem;
+        }
+    }
+}
