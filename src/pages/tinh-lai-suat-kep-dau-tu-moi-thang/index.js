@@ -6,7 +6,7 @@ import { Table, Button, Input, Row, Col, Tabs } from 'antd';
 import { formatCurrency } from '../../helpers/currency';
 import { DefaultLayout } from '../../components/layouts';
 import { BarChart } from "../../components/common/chart";
-
+import http from '../../helpers/http';
 
 const unit = (price) => {
     return price >= 1000 ? 'tỷ' : 'triệu';
@@ -63,7 +63,7 @@ const RateCaculator = () => {
     }, []);
 
     const onSubmit = () => {
-        axios.post('http://localhost:5000/api/rates', Object.entries(form).reduce((acc, [key, value]) => ({
+        http.post('/rates', Object.entries(form).reduce((acc, [key, value]) => ({
             ...acc, [key]: Number(value)
         }), {}))
             .then(({data}) => {
