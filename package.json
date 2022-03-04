@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 4000",
     "analyze": "ANALYZE=true next build",
     "less": "lessc --js --modify-var=\"ant-prefix=custom\" node_modules/antd/dist/antd.variable.less modified.css"
   },
