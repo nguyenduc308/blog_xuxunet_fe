@@ -9,7 +9,7 @@ import { BarChart } from "../../components/common/chart";
 
 
 const unit = (price) => {
-    return price >= 1000 ? 'tỷ' : 'triệu'
+    return price >= 1000 ? 'tỷ' : 'triệu';
 }
 const columns = [
     {
@@ -43,10 +43,11 @@ const RateCaculator = () => {
     const [form, setForm] = useState({
         monthly: 5,
         rate: 15,
-        count: 10
+        count: 10,
+        nav: 0
     });
     const [result, setResult] = useState(null);
-    
+
     const onChange = (e) => {
         setForm({
             ...form,
@@ -81,6 +82,10 @@ const RateCaculator = () => {
                 <Row className="rates">
                     <Col span={24} md={{span: 6}} className="controls">
                         <div className="mt-1">
+                            <div>Vốn: </div>
+                            <Input className="w-100" value={form.nav} onChange={onChange} name="nav" suffix={<span style={{color: '#999'}}>triệu</span>}/>
+                        </div>
+                        <div className="mt-1">
                             <div>Số tiền mỗi tháng: </div>
                             <Input className="w-100" value={form.monthly} onChange={onChange} name="monthly" suffix={<span style={{color: '#999'}}>triệu</span>}/>
                         </div>
@@ -99,9 +104,9 @@ const RateCaculator = () => {
                     <Col span={24} md={{span: 18}} className="result">
                     <Tabs defaultActiveKey="table" type="card" size="large" onTabClick={onTabClick}>
                         <Tabs.TabPane tab="Bảng" key="table">
-                        {result && 
+                        {result &&
                             <>
-                                Bạn sẽ nhận được <strong>{ formatCurrency(result.total) + ' ' + unit(result.total)}</strong> sau <strong>{ result.count } năm</strong> đầu tư cố định <strong>{result.monthly} {unit(result.monthly)}</strong> mỗi tháng, lãi suất năm <strong>{result.rate}%/năm</strong>
+                                Bạn sẽ nhận được <strong>{ formatCurrency(result.total) + ' ' + unit(result.total)}</strong> sau <strong>{ result.count } năm</strong> đầu tư cố định <strong>{result.monthly} {unit(result.monthly)}</strong> mỗi tháng {result.nav > 0 && <span>(vốn ban đầu <strong>{formatCurrency(result.nav)} {unit(result.nav)}</strong>)</span>}, lãi suất năm <strong>{result.rate}%/năm</strong>
                                 <div className="mt-1">
                                     <Table className="table" scroll={{ y: 600 }} columns={columns} dataSource={result.schema} pagination={false} rowKey="id"/>
                                 </div>

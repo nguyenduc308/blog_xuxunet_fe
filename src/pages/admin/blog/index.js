@@ -20,7 +20,7 @@ const Dashboard = (props) => {
 
 Dashboard.Layout = AdminLayout;
 
-export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
+export const getServerSideProps = wrapper.getServerSideProps(async ({ store }) => {
   return {
     props: {}
   };

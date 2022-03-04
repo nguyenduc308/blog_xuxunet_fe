@@ -11,7 +11,7 @@ const Header = () => {
             <div className="header-content-left">
                 <Link href="/">
                     <a>
-                        <h1>Flat</h1>
+                        <h1>Xuxuxet.Com</h1>
                     </a>
                 </Link>
             </div>
