@@ -1,0 +1,95 @@
+.comment-item {
+    display: flex;
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    &:not(:last-child) {
+      border-bottom: 1px solid #efefef;
+    }
+  
+    .cmt-avatar {
+      flex: 0 0 40px;
+      padding-right: 1rem;
+      img {
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+  
+    .cmt-body {
+      flex: 1;
+      padding-left: 1rem;
+      .cmt-header {
+        .name {
+          font-weight: bold;
+        }
+      }
+      .cmt-content {
+        margin-top: 0.5rem;
+        font-size: 16px;
+      }
+      .cmt-meta {
+        font-size: 14px;
+        margin-top: 1rem;
+        .action {
+          font-weight: bold;
+          cursor: pointer;
+        }
+        .time {
+          padding-left: 1rem;
+          font-size: 12px;
+          color: #999;
+        }
+      }
+  
+      .children {
+        width: 100%;
+      }
+    }
+}
+
+.comment-input {
+    display: flex;
+    padding: 1rem;
+  
+    .cmt-input-avatar {
+      flex: 0 0 40px;
+      padding-right: 1rem;
+      img {
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+  
+    .cmt-input-body {
+      padding-left: 1rem;
+      width: 100%;
+      max-width: 100%;
+  
+      .cmt-input {
+        width: 100%;
+        border: 1px solid #efefef;
+        padding: 1rem;
+        border-radius: 4px;
+        height: 60px;
+        font-size: 16px;
+        outline: none;
+      }
+  
+      .cmt-input-meta {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: flex-end;
+  
+        .cmt-input-action {
+          border-radius: 4px;
+          border: 0;
+          padding: 10px 16px;
+          cursor: pointer;
+          &:hover {
+            background: #ccc;
+          }
+        }
+      }
+    }
+}

@@ -1,10 +1,16 @@
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../../store/auth/actions";
 import Menu from "./menu";
 
 const Header = () => {
 
     const user = useSelector(state => state.auth?.user);
+    const dispatch = useDispatch();
+
+    const onLogout = () => {
+        dispatch(logout());
+    }
 
     return <header className="header">
         <div className="header-content">
@@ -29,7 +35,10 @@ const Header = () => {
                       Profile
                     </a>
                 </Link>}
-
+                &nbsp;/&nbsp;
+                <span className="logout" onClick={onLogout}>
+                    Logout
+                </span>
             </div>}
             {!user && <div>
                 <Link href="/auth/login">

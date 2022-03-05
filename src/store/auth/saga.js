@@ -31,11 +31,20 @@ function* getMe(action) {
   }
 }
 
+function* logout(action) {
+  try {
+    const res = yield http.post('/auth/logout');
+    yield put(setAuth(null));
+  } catch (err) {
+  }
+}
+
 function* authSaga() {
   yield all([
     takeLatest(actionTypes.LOGIN, login),
     takeLatest(actionTypes.REGISTER, register),
     takeLatest(actionTypes.GET_ME, getMe),
+    takeLatest(actionTypes.LOGOUT, logout),
   ]);
 }
 

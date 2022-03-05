@@ -8,6 +8,9 @@ export const actionTypes = {
 
   GET_ME: 'GET_ME',
   GET_ME_FAILURE: 'GET_ME_FAILURE',
+
+  LOGOUT: 'LOGOUT',
+  LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
 };
 
 export function loginFailure(error) {
@@ -39,5 +42,9 @@ export function getMe() {
 
 export function getMeFailure() {
   return { type: actionTypes.GET_ME_FAILURE };
+}
+
+export function logout() {
+  return { type: actionTypes.LOGOUT };
 }
 

@@ -15,6 +15,6 @@ body {
     }
 }
 
-[class^='ant'] {
+[class^='ant']:not(.ant-scrolling-effect) {
     font-size: 16px;
 }
