@@ -1,0 +1,14 @@
+.admin-categories-wrapper {
+    &__header {
+        margin-bottom: 1rem;
+    }
+}
+
+.admin-categories-create {
+    .ant-form-item {
+        flex-direction: column;
+    }
+    .ant-form-item-label {
+        text-align: left;
+    }
+}

@@ -9,6 +9,9 @@ function ContentLayout({ children }) {
               <div className='content'>
                 {children}
               </div>
+              <aside>
+                
+              </aside>
             </main>
         <Footer></Footer>
     </div>

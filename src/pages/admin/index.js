@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Head from 'next/head';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
@@ -13,6 +14,9 @@ const Dashboard = (props) => {
 
   return (
     <>
+      <Head>
+        <title>Admin dashboard</title>
+      </Head>
       <h1 style={{'textAlign': 'center'}}>My Dashboard!</h1>
     </>
   );
@@ -20,10 +24,13 @@ const Dashboard = (props) => {
 
 Dashboard.Layout = AdminLayout;
 
-export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
-  return {
-    props: {}
-  };
+export const getServerSideProps = wrapper.getServerSideProps(({ store, res, req }) => {
+  // const token = checkServerSideCookie(req, store);
+
+  // if (token) {
+  //   return serverSideRedirect(res, '/');
+  // }
 });
+
 
 export default Dashboard;

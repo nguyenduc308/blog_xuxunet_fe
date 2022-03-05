@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
+
 import { DefaultLayout } from '../../components/layouts';
 import { login } from '../../store/auth/actions';
-import { useRouter } from 'next/router';
+import { checkServerSideCookie, serverSideRedirect } from '../../helpers/auth';
+import {wrapper} from '../../store';
 
 const Login = (props) => {
-  const user = useSelector(state => state.auth?.user);
+  const {user, loading} = useSelector(state => state.auth);
   const router = useRouter();
 
   useEffect(() => {
@@ -73,7 +76,7 @@ const Login = (props) => {
 
             <Form.Item>
               <div className='flex-center w-100'>
-                <Button type='primary' htmlType='submit' size='large'>
+                <Button type='primary' htmlType='submit' size='large' loading={loading}>
                   Đăng nhập
                 </Button>
               </div>
@@ -85,5 +88,17 @@ const Login = (props) => {
 };
 
 Login.Layout = DefaultLayout;
+
+export const getServerSideProps = wrapper.getServerSideProps(({ store, res, req }) => {
+  const token = checkServerSideCookie(req, store);
+
+  if (token) {
+    return serverSideRedirect(res, '/');
+  }
+
+  // store.dispatch(END);
+  // await store.sagaTask.toPromise();
+});
+
 
 export default Login;

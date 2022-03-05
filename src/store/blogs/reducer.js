@@ -2,64 +2,48 @@ import { actionTypes } from './actions';
 import { HYDRATE } from 'next-redux-wrapper';
 
 const initialState = {
-  error: false,
-  user: null,
+  list: null,
   loading: false,
+  error: null,
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    // case HYDRATE:
-    //   return {
-    //     ...state,
-    //     data: action.payload
-    //   };
-    case actionTypes.LOGIN_FAILURE:
+     case HYDRATE:
+      return {
+        ...state,
+        blogs: action.payload
+    };
+    case actionTypes.CREATE_BLOG:
+      return {
+        ...state,
+        loading: true,
+        error: null
+    };
+    case actionTypes.CREATE_BLOG_SUCCESS:
+      return {
+        ...state,
+        list: action.payload,
+        loading: false,
+    };
+    case actionTypes.CREATE_BLOG_FAILURE:
       return {
         ...state,
         error: action.payload,
         loading: false,
     };
-
-    case actionTypes.SET_SESSION:
-      return {
-        ...state,
-        user: action.payload,
-        loading: false,
-      };
-
-    case actionTypes.LOGIN:
+    case actionTypes.GET_BLOGS:
       return {
         ...state,
         loading: true,
     };
-
-    case actionTypes.REGISTER:
+    case actionTypes.GET_BLOGS_SUCCESS:
       return {
         ...state,
-        loading: true,
-    };
-
-    case actionTypes.REGISTER_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
+        list: action.payload,
         loading: false,
     };
-
-    case actionTypes.GET_ME:
-      return {
-        ...state,
-        loading: true,
-    };
-
-    case actionTypes.GET_ME_FAILURE:
-      return {
-        ...state,
-        loading: false,
-    };
-
-    default:
+    default: 
       return state;
   }
 }

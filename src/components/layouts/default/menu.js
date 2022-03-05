@@ -4,11 +4,15 @@ import { useRouter } from 'next/router';
 const Menu = (props) => {
   const menuList = [
     {
-      label: 'Blogs',
+      label: 'Trang chủ',
+      path: '/'
+    },
+    {
+      label: 'Bài viết',
       path: '/blogs'
     },
     {
-      label: 'Rate',
+      label: 'Công cụ đầu tư',
       path: '/tinh-lai-suat-kep-dau-tu-moi-thang'
     },
   ];
@@ -20,7 +24,7 @@ const Menu = (props) => {
       <ul className="menu-list">
         {
           menuList.map((item) => {
-            return <li key={item.path} className={'menu-item' + (router.asPath.indexOf(item.path) > -1 ? ' active' : '')}>
+            return <li key={item.path} className={'menu-item' + (item.path !== '/' && router.asPath.indexOf(item.path) > -1 ? ' active' : '')}>
               <Link href={item.path}>
                 <a>{item.label}</a>
               </Link>

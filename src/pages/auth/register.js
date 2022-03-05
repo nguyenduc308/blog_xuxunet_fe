@@ -4,19 +4,36 @@ import { MailOutlined, LockOutlined, UserSwitchOutlined } from '@ant-design/icon
 import Link from 'next/link';
 import Head from 'next/head';
 import { Select } from 'antd';
+import { useRouter } from 'next/router';
+
 import { DefaultLayout } from '../../components/layouts';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../../store/auth/actions';
+import { checkServerSideCookie, serverSideRedirect } from '../../helpers/auth';
+import {wrapper} from '../../store';
+
 
 const Register = (props) => {
 
-  const [data, setData] = useState({
+  const [data] = useState({
       email: '',
       password: '',
       confirmPassword: '',
       account_type: 'customer',
   });
+  const router = useRouter();
+  const user = useSelector(state => state.auth?.user);
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user]);
+
+  const dispatch = useDispatch();
 
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+    dispatch(register(values))
   };
 
   return (<>
@@ -39,12 +56,28 @@ const Register = (props) => {
             onFinish={onFinish}
           >
             <Form.Item
+              name='first_name'
+              label='Họ'
+              className='auth-form-item'
+            >
+              <Input placeholder='Họ' />
+            </Form.Item>
+
+            <Form.Item
+              name='last_name'
+              label='Tên'
+              className='auth-form-item'
+            >
+              <Input placeholder='Tên' />
+            </Form.Item>
+
+            <Form.Item
               name='email'
               label='Email'
               rules={[{ required: true, message: 'Bắt buộc điền email!' }]}
               className='auth-form-item'
             >
-              <Input prefix={<MailOutlined />} placeholder='Email' />
+              <Input placeholder='Email' />
             </Form.Item>
 
             <Form.Item
@@ -54,7 +87,6 @@ const Register = (props) => {
               rules={[{ required: true, message: 'Bắt buộc điền mật khẩu!' }]}
             >
               <Input
-                prefix={<LockOutlined />}
                 type='password'
                 placeholder='Mật khẩu'
               />
@@ -67,13 +99,12 @@ const Register = (props) => {
               rules={[{ required: true, message: 'Bắt buộc điền xác nhận mật khẩu' }]}
             >
               <Input
-                prefix={<LockOutlined />}
                 type='password'
                 placeholder='Xác nhận mật khẩu'
               />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               label='Vai trò'
               name='account_type'
               className='auth-form-item'
@@ -84,7 +115,7 @@ const Register = (props) => {
                 <Select.Option value='freelancer'>Freelancer</Select.Option>
                 <Select.Option value='hr'>Nhà tuyển dụng</Select.Option>
               </Select>
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item className='form-submit-area'>
               <div className='flex-center w-100'>
@@ -100,5 +131,16 @@ const Register = (props) => {
 };
 
 Register.Layout = DefaultLayout;
+
+
+export const getServerSideProps = wrapper.getServerSideProps(({ store, res, req }) => {
+  const token = checkServerSideCookie(req, store);
+
+  if (token) {
+    return serverSideRedirect(res, '/');
+  }
+});
+
+
 
 export default Register;

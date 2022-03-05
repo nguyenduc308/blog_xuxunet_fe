@@ -1,6 +1,6 @@
 import { all, put, takeLatest } from 'redux-saga/effects';
 import http from '../../libs/http';
-import { actionTypes, loginFailure, setAuth } from './actions';
+import { actionTypes, getMeFailure, loginFailure, registerFailure, setAuth } from './actions';
 
 function* login(action) {
   try {
@@ -11,17 +11,30 @@ function* login(action) {
   }
 }
 
+function* register(action) {
+  try {
+    const res = yield http.post('/auth/register', action.payload);
+    
+    yield put(setAuth(res.data.user));
+  } catch (err) {
+    yield put(registerFailure(err));
+  }
+}
+
 function* getMe(action) {
   try {
     const res = yield http.get('/users/profile');
     yield put(setAuth(res.data));
   } catch (err) {
+
+    yield put(getMeFailure())
   }
 }
 
 function* authSaga() {
   yield all([
     takeLatest(actionTypes.LOGIN, login),
+    takeLatest(actionTypes.REGISTER, register),
     takeLatest(actionTypes.GET_ME, getMe),
   ]);
 }

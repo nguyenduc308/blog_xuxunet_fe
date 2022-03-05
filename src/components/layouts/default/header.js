@@ -11,7 +11,7 @@ const Header = () => {
             <div className="header-content-left">
                 <Link href="/">
                     <a>
-                        <h1>Xuxuxet.Com</h1>
+                        <h1>Xuxunet.Com</h1>
                     </a>
                 </Link>
             </div>
@@ -19,11 +19,17 @@ const Header = () => {
                 <Menu />
             </div>
             {user && <div>
-                <Link href="/users/me">
+                {['admin', 'mod'].includes(user.role) && <Link href="/admin">
                     <a>
                       Dashboard
                     </a>
-                </Link>
+                </Link>}
+                {!['admin', 'mod'].includes(user.role) && <Link href="/users/me">
+                    <a>
+                      Profile
+                    </a>
+                </Link>}
+
             </div>}
             {!user && <div>
                 <Link href="/auth/login">
