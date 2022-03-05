@@ -1,6 +1,6 @@
 const Footer = () => {
     return <footer className="footer">
-        #Footer
+        By Xuxunet.Com
     </footer>;
 };
 

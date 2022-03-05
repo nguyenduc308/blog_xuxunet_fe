@@ -1,16 +1,12 @@
-import Link from 'next/link';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { END } from 'redux-saga';
+import { useEffect, useState } from 'react';
 import { AdminLayout } from '../../../components/layouts';
-import { wrapper } from '../../../store';
-import { getBlogs } from '../../../store/blogs/actions';
 import { Button, Table } from 'antd';
+import http from '../../../libs/http';
 
 const BlogList = (props) => {
-  const { list, loading } = useSelector(state => state.blogs)
-  const dispatch = useDispatch();
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const columns = [
       {
           title: 'Tiêu đề',
@@ -43,11 +39,13 @@ const BlogList = (props) => {
   ];
 
   useEffect(() => {
-    if (!list) {
-      dispatch(getBlogs());
-    }
+    http.get('/blogs')
+      .then(({data}) => {
+        setList(data);
+        setLoading(false);
+      })
 
-  }, [dispatch, list]);
+  }, []);
 
   return (
     <>

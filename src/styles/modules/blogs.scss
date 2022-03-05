@@ -22,3 +22,14 @@
         word-break: break-all;
     }
 }
+
+.blog-detail {
+    background: #fff;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    &__content {
+        margin-top: 1.5rem;
+    }
+}

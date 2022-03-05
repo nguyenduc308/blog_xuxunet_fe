@@ -8,7 +8,6 @@ import { END } from 'redux-saga';
 import { AdminLayout } from '../../../components/layouts';
 import { wrapper } from '../../../store';
 import { isClient } from '../../../helpers/utils';
-import { createBlog } from '../../../store/blogs/actions';
 import http from '../../../libs/http';
 
 let CustomEditor;
@@ -41,10 +40,12 @@ const BlogCreate = (props) => {
   }
 
   const onFinish = (values) => {
-    dispatch(createBlog({
+    http.post('/blogs', {
       ...blog,
       ...values,
-    }))
+    }).then(() => {
+
+    })
   }
 
   useEffect(() => {

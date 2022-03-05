@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -13,6 +14,9 @@ const Index = (props) => {
 
   return (
     <>
+    <Head>
+      <title>Đầu tư để trở nên giàu có!</title>
+    </Head>
       <h1 style={{'textAlign': 'center'}}>Wellcome to our platform!</h1>
     </>
   );

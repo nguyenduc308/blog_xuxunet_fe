@@ -8,7 +8,7 @@ const http = axios.create({
 http.interceptors.response.use((res) => {
   return res.data;
 }, (res) => {
-  return Promise.reject(res.response.error);
+  return Promise.reject(res.response);
 })
 
 
