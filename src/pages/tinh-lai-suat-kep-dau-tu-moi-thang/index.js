@@ -6,7 +6,7 @@ import { Table, Button, Input, Row, Col, Tabs } from 'antd';
 import { formatCurrency } from '../../helpers/currency';
 import { DefaultLayout } from '../../components/layouts';
 import { BarChart } from "../../components/common/chart";
-import http from '../../helpers/http';
+import http from '../../libs/http';
 
 const unit = (price) => {
     return price >= 1000 ? 'tỷ' : 'triệu';

@@ -3,7 +3,8 @@ export const actionTypes = {
   LOGIN: 'LOGIN',
   REGISTER: 'REGISTER',
   REGISTER_FAILURE: 'REGISTER_FAILURE',
-  SET_TOKEN: 'SET_TOKEN'
+  SET_SESSION: 'SET_SESSION',
+  GET_ME: 'GET_ME',
 };
 
 export function loginFailure(error) {
@@ -17,6 +18,11 @@ export function login(formData) {
   return { type: actionTypes.LOGIN, payload: formData };
 }
 
-export function setToken(token) {
-  return { type: actionTypes.SET_TOKEN, payload: token };
+export function setAuth(user) {
+  return { type: actionTypes.SET_SESSION, payload: user };
 }
+
+export function getMe() {
+  return { type: actionTypes.GET_ME };
+}
+

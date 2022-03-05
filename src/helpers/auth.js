@@ -23,13 +23,13 @@ export const getCookie = (key, req) => {
       ? getCookieFromBrowser(key)
       : getCookieFromServer(key, req);
 };
-  
+
 export const checkServerSideCookie = (req, store) => {
     const token = getCookie("token", req);
 
-    if (token) {
-      store.dispatch(setToken(token));
-    }
+    // if (token) {
+    //   store.dispatch(setToken(token));
+    // }
 
     return token;
 };
@@ -38,6 +38,6 @@ export const serverSideRedirect = (res, path = '/', statusCode = 302) => {
     res.statusCode = statusCode;
     res.setHeader('location', `${path}`) ;
     res.end();
- 
+
     return { props: {} };
 };

@@ -1,21 +1,29 @@
 import { all, put, takeLatest } from 'redux-saga/effects';
-import { actionTypes, failure, loadDataSuccess } from './actions';
+import http from '../../libs/http';
+import { actionTypes, loginFailure, setAuth } from './actions';
 
-
-function* loadDataSaga() {
+function* login(action) {
   try {
-    const res = yield fetch('https://jsonplaceholder.typicode.com/users');
-    const data = yield res.json();
-    yield put(loadDataSuccess(data));
+    const res = yield http.post('/auth/login', action.payload);
+    yield put(setAuth(res.data.user));
   } catch (err) {
-    yield put(failure(err));
+    yield put(loginFailure(err));
+  }
+}
+
+function* getMe(action) {
+  try {
+    const res = yield http.get('/users/profile');
+    yield put(setAuth(res.data));
+  } catch (err) {
   }
 }
 
 function* authSaga() {
   yield all([
-    takeLatest(actionTypes.LOAD_DATA, loadDataSaga),
+    takeLatest(actionTypes.LOGIN, login),
+    takeLatest(actionTypes.GET_ME, getMe),
   ]);
 }
 
-export default  authSaga;
+export default authSaga;

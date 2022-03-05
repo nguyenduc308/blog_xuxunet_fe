@@ -3,16 +3,13 @@ import { HYDRATE } from 'next-redux-wrapper';
 
 const initialState = {
   error: false,
-  token: '',
-  user: {
-    name: 'Đức'
-  },
+  user: null,
   loading: false,
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    // case HYDRATE: 
+    // case HYDRATE:
     //   return {
     //     ...state,
     //     data: action.payload
@@ -23,11 +20,10 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case actionTypes.LOGIN_SUCCESS:
+    case actionTypes.SET_SESSION:
       return {
         ...state,
         user: action.payload,
-        token: action.payload,
         loading: false,
       };
 

@@ -1,19 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
-
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import Head from 'next/head';
 import { DefaultLayout } from '../../components/layouts';
+import { login } from '../../store/auth/actions';
+import { useRouter } from 'next/router';
 
 const Login = (props) => {
-  const [data, setData] = useState({
-      email: '',
-      password: ''
-  });
+  const user = useSelector(state => state.auth?.user);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user])
+
+  const dispatch = useDispatch();
 
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+    dispatch(login(values));
   };
 
   return (<>

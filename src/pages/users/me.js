@@ -3,12 +3,15 @@ import jwtDecode from 'jwt-decode';
 import {wrapper} from '../../store';
 
 import { checkServerSideCookie, serverSideRedirect } from '../../helpers/auth';
+import { DefaultLayout } from '../../components/layouts';
 
 const Profile = (props) => {
   return (<>
     Profile
   </>);
 };
+
+Profile.Layout = DefaultLayout;
 
 export const getServerSideProps = wrapper.getServerSideProps(({ store, res, req }) => {
   const token = checkServerSideCookie(req, store);

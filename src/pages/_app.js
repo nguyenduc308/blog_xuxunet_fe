@@ -1,10 +1,12 @@
 import {wrapper} from '../store';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ReactReduxContext } from "react-redux";
+import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import { ConfigProvider } from 'antd';
 
 import 'antd/dist/antd.variable.min.css';
 import "../styles/index.scss";
+import { useEffect } from 'react';
+import { getMe } from '../store/auth/actions';
 
 ConfigProvider.config({
   theme: {
@@ -16,6 +18,14 @@ const NoopLayout = ({children}) => <>{children}</>;
 
 function App({ Component, pageProps }) {
   const Layout = Component.Layout ? Component.Layout : NoopLayout;
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth?.user);
+
+  useEffect(() => {
+    if (!user) {
+      dispatch(getMe());
+    }
+  }, [user])
 
   return <ReactReduxContext.Consumer>
     {({store}) => (
@@ -27,7 +37,7 @@ function App({ Component, pageProps }) {
         </ConfigProvider>
       </PersistGate>
     )}
-  
+
   </ReactReduxContext.Consumer>;
 }
 

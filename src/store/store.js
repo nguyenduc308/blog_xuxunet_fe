@@ -27,16 +27,13 @@ const makeStore = () => {
     const persistedReducer = persistReducer({
       key: 'root',
       storage,
-      whitelist: ['auth']
+      whitelist: []
     }, reducer);
 
     store = createStore(persistedReducer, bindMiddleware([sagaMiddleware]));
 
     store.sagaTask = sagaMiddleware.run(rootSaga);
-    store.sagaTask.toPromise().catch(error => {
-      console.log('saga error', error);
-      throw error;
-    });
+
     store.__PERSISTOR = persistStore(store);
 
   } else {
