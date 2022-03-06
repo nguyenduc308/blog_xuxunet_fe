@@ -34,21 +34,24 @@ const Header = () => {
             <div className="header-content-center">
                 <Menu />
             </div>
-            {user && <div>
-                {['admin', 'mod'].includes(user.role) && <Link href="/admin">
-                    <a>
-                      Dashboard
-                    </a>
-                </Link>}
-                {!['admin', 'mod'].includes(user.role) && <Link href="/users/me">
-                    <a>
-                      Profile
-                    </a>
-                </Link>}
-                &nbsp;/&nbsp;
-                <span className="logout" onClick={onLogout}>
-                    Logout
-                </span>
+            {user && <div className="header-content-right">
+                <div className="pc">
+                  {['admin', 'mod'].includes(user.role) && <Link href="/admin">
+                      <a>
+                        Dashboard
+                      </a>
+                  </Link>}
+                  {!['admin', 'mod'].includes(user.role) && <Link href="/users/me">
+                      <a>
+                        Profile
+                      </a>
+                  </Link>}
+                  &nbsp;/&nbsp;
+                  <span className="logout" onClick={onLogout}>
+                      Logout
+                  </span>
+                </div>
+                <FaHamburger className="sp" fontSize={26} onClick={() => setIsShowMobileMenu(!isShowMobileMenu)}/>
             </div>}
             {!user && <div class="header-content-right">
                 <div className="pc">
