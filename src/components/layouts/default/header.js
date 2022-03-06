@@ -53,7 +53,7 @@ const Header = () => {
                 </div>
                 <FaHamburger className="sp" fontSize={26} onClick={() => setIsShowMobileMenu(!isShowMobileMenu)}/>
             </div>}
-            {!user && <div class="header-content-right">
+            {!user && <div className="header-content-right">
                 <div className="pc">
                   <Link href="/auth/login">
                       <a>

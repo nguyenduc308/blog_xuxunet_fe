@@ -10,7 +10,7 @@ const { SubMenu } = Menu;
 
 function AdminLayout({ children }) {
   const router = useRouter();
-  
+
   const { user, loading } = useSelector(state => state.auth);
 
   useEffect(() => {
@@ -42,8 +42,10 @@ function AdminLayout({ children }) {
                     <SubMenu key="sub1" icon={<SettingOutlined />} title="Blog">
                         <Menu.Item key="/admin/blog/create">Tạo bài đăng</Menu.Item>
                         <Menu.Item key="/admin/blog">Danh sách</Menu.Item>
+                        <Menu.Item key="/admin/blog/deleted">Đã xoá</Menu.Item>
                     </SubMenu>
                     <Menu.Item key="/admin/categories" icon={<SettingOutlined />}>Chủ đề</Menu.Item>
+                    <Menu.Item key="/admin/tracking" icon={<SettingOutlined />}>Quảng bá</Menu.Item>
                 </Menu>
               </aside>
               <div className='content'>

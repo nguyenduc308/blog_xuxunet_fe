@@ -37,7 +37,7 @@ const BlogUpdate = (props) => {
   return (
     <>
       <Head>
-        <title>Tạo bài viết</title>
+        <title>Sửa bài viết</title>
       </Head>
       <div className="blog-create-wrapper">
         <div className="blog-create-content">

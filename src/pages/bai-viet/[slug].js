@@ -7,6 +7,7 @@ import http from '../../libs/http';
 import { wrapper } from '../../store';
 import { serverSideRedirect } from '../../helpers/auth';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 const BlogDetail = ({ blog, comments: initcomments }) => {
 
@@ -49,7 +50,7 @@ const BlogDetail = ({ blog, comments: initcomments }) => {
         setComments(comments.map((cmt) => {
           if (cmt._id === conversation.comment_id) {
             return {
-              ...cmt, 
+              ...cmt,
               children: [...cmt.children, res.data]
             }
           }
@@ -57,9 +58,25 @@ const BlogDetail = ({ blog, comments: initcomments }) => {
         }))
       })
     }
- 
   }
-  
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const code = router.query.t;
+    const campaign = localStorage.getItem('campaign');
+
+    if (code && !campaign) {
+      http.get(`/tracking/${code}`)
+        .then(() => {
+          localStorage.setItem('campaign', JSON.stringify({
+            code,
+            date: Date.now()
+          }))
+        });
+    }
+  }, [])
+
   return (
   <>
     <Head>

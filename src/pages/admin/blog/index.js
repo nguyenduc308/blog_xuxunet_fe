@@ -2,10 +2,17 @@ import { useEffect, useState } from 'react';
 import { AdminLayout } from '../../../components/layouts';
 import { Button, Table } from 'antd';
 import http from '../../../libs/http';
+import Head from 'next/head';
 
 const BlogList = (props) => {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleSoftDelete = (fields) => {
+    http.delete(`/blogs/${fields._id}/soft-delete`).then(() => {
+      setList(list.filter(({_id}) => _id !== fields._id));
+    })
+  }
 
   const columns = [
       {
@@ -29,10 +36,10 @@ const BlogList = (props) => {
       {
         title: '',
         dataIndex: '',
-        render: (author) => (
+        render: (author, fields) => (
           <>
             <Button type="primary" style={{marginRight: '10px'}}>Sửa</Button>
-            <Button type="danger">Xóa</Button>
+            <Button type="danger" onClick={() => handleSoftDelete(fields)}>Xóa</Button>
           </>
         )
     },
@@ -49,6 +56,9 @@ const BlogList = (props) => {
 
   return (
     <>
+    <Head>
+      <title>Danh sách bài đăng</title>
+    </Head>
       {<Table
           rowKey="_id"
           columns={columns}
