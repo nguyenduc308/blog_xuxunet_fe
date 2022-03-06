@@ -1,6 +1,6 @@
 .content-wrapper {
     background: #efefef;
-    
+
     main {
         width: 100%;
         max-width: 1200px;
@@ -8,6 +8,10 @@
         display: flex;
         aside {
             flex: 0 0 300px;
+            display: block;
+            @media screen and (max-width: #{$md - 1px}) {
+              display: none;
+            }
         }
         .content {
             flex: 1;

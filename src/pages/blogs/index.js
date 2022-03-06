@@ -10,7 +10,7 @@ const Blogs = ({blogs}) => {
     <Head>
       <title>Tất cả các bài viết</title>
     </Head>
-    {blogs.length && blogs.map((blog) => {
+    {!!blogs.length && blogs.map((blog) => {
       return <BlogItem key={blog._id} blog={blog}></BlogItem>
     })}
     {
