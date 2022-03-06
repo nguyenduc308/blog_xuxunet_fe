@@ -74,7 +74,10 @@ const Register = (props) => {
             <Form.Item
               name='email'
               label='Email'
-              rules={[{ required: true, message: 'Bắt buộc điền email!' }]}
+              rules={[
+                { required: true, message: 'Bắt buộc điền email!' },
+                { type: 'email', message: 'Email không hợp lệ' }
+              ]}
               className='auth-form-item'
             >
               <Input placeholder='Email' />
@@ -84,11 +87,15 @@ const Register = (props) => {
               name='password'
               label='Mật khẩu'
               className='auth-form-item'
-              rules={[{ required: true, message: 'Bắt buộc điền mật khẩu!' }]}
+              rules={[
+                { required: true, message: 'Bắt buộc điền mật khẩu!' },
+                { min: 6, message: 'Mật khẩu quá ngắn' },
+              ]}
             >
               <Input
                 type='password'
                 placeholder='Mật khẩu'
+                autoComplete="off"
               />
             </Form.Item>
 
@@ -96,11 +103,22 @@ const Register = (props) => {
               name='confirmPassword'
               label='Xác nhận mật khẩu'
               className='auth-form-item'
-              rules={[{ required: true, message: 'Bắt buộc điền xác nhận mật khẩu' }]}
+              rules={[
+                { required: true, message: 'Bắt buộc điền xác nhận mật khẩu' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('Xác nhận mật khẩu không khớp'));
+                  },
+                }),
+              ]}
             >
               <Input
                 type='password'
                 placeholder='Xác nhận mật khẩu'
+                autoComplete="off"
               />
             </Form.Item>
 

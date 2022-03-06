@@ -49,7 +49,10 @@ const Login = (props) => {
               name='email'
               label='Email'
               className='auth-form-item'
-              rules={[{ required: true, message: 'Bắt buộc nhập email' }]}
+              rules={[
+                { required: true, message: 'Bắt buộc nhập email' },
+                { type: 'email', message: 'Email không hợp lệ' }
+              ]}
             >
               <Input prefix={<MailOutlined />} placeholder='Username' />
             </Form.Item>

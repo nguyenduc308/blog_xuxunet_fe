@@ -92,7 +92,7 @@ const Header = () => {
                       </div>
                       <div className="menu-mobile-item">
                         <Link href="/auth/register">
-                          <a>Đắng ký</a>
+                          <a>Đăng ký</a>
                         </Link>
                       </div>
                     </>}
