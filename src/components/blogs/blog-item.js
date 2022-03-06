@@ -6,7 +6,7 @@ const BlogItem = ({blog}) => {
             {blog.featured_image_url && <div className="blog-item-left">
             </div>}
             <div className="blog-item-right">
-                <Link href={'/blogs/' + blog.slug}>
+                <Link href={'/bai-viet/' + blog.slug}>
                     <a>
                         <h3 className="blog-item-title">{blog.title}</h3>
                     </a>

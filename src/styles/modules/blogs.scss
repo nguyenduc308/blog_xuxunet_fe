@@ -7,6 +7,8 @@
     background: #fff;
     margin-bottom: 2rem;
     transition: 0.3s;
+    width: 100%;
+    overflow: hidden;
 
     &:hover {
         box-shadow: 0 4px 18px rgb(0,0,0, 0.1);
@@ -19,7 +21,6 @@
     &-right {
         flex: 1;
         padding: 1rem 2rem;
-        word-break: break-all;
     }
 }
 
