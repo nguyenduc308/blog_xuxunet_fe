@@ -42,9 +42,6 @@ function App({ Component, pageProps }) {
         <PersistGate persistor={store.__PERSISTOR} loading={<div>Loading</div>}>
           <ConfigProvider>
             <Layout>
-                {/* <Head>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                </Head> */}
                 <Component {...pageProps}/>
             </Layout>
           </ConfigProvider>

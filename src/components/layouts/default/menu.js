@@ -9,7 +9,7 @@ const Menu = (props) => {
     },
     {
       label: 'Bài viết',
-      path: '/blogs'
+      path: '/bai-viet'
     },
     {
       label: 'Công cụ đầu tư',
@@ -18,7 +18,7 @@ const Menu = (props) => {
   ];
 
   const router = useRouter()
-  
+
   return (
     <nav className="main-menu">
       <ul className="menu-list">

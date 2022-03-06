@@ -10,6 +10,11 @@
 
     h1 {
         margin: 0;
+        font-size: 28px;
+        font-weight: bold;
+        @media screen and (max-width: #{$md - 1px}) {
+          font-size: 20px;
+        }
     }
 
     .header-content {
@@ -25,6 +30,21 @@
             @media screen and (max-width: #{$md - 1px}) {
                 display: none;
             }
+        }
+
+        .header-content-right {
+          .sp {
+            display: none;
+            @media screen and (max-width: #{$md - 1px}) {
+              display: block;
+            }
+          }
+          .pc {
+            display: block;
+            @media screen and (max-width: #{$md - 1px}) {
+              display: none;
+            }
+          }
         }
 
         .logout {
@@ -48,14 +68,14 @@
         .menu-item {
             a {
                 color: #333;
-                font-weight: bold;
+                font-weight: 500;
             }
 
             &:not(:first-child) {
                 a {
                     padding: 0 1rem;
                 }
-            } 
+            }
             &.active {
                 a {
                     color: $primary-color;
@@ -78,4 +98,45 @@
         margin: 0 auto;
         padding-top: $header-height + 40px;
     }
+}
+
+.menu-mobile {
+  position: fixed;
+  top: #{$header-height + 2px};
+  background: #fff;
+  width: 100%;
+  bottom: 0;
+  right: 0;
+  font-size: 18px;
+  transition: all 0.3s;
+  visibility: hidden;
+  left: 100%;
+  box-shadow: 1px 1px 3px gray;
+
+  &.active {
+    visibility: visible;
+    left: 0;
+  }
+
+  a {
+    font-weight: 700;
+    color: #333;
+  }
+
+  .menu-mobile-content {
+    padding: 1rem;
+
+    .menu-mobile-section:not(:last-child) {
+      border-bottom: 1px solid #ccc;
+    }
+  }
+
+  .menu-mobile-section {
+    padding-bottom: 0.8rem;
+    margin-bottom: 0.8rem;
+
+    .menu-mobile-item {
+      margin-bottom: 0.5rem;
+    }
+  }
 }
