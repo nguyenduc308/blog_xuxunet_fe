@@ -60,23 +60,6 @@ const BlogDetail = ({ blog, comments: initcomments }) => {
     }
   }
 
-  const router = useRouter();
-
-  useEffect(() => {
-    const code = router.query.t;
-    const campaign = localStorage.getItem('campaign');
-
-    if (code && !campaign) {
-      http.get(`/tracking/${code}`)
-        .then(() => {
-          localStorage.setItem('campaign', JSON.stringify({
-            code,
-            date: Date.now()
-          }))
-        });
-    }
-  }, [])
-
   return (
   <>
     <Head>

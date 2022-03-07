@@ -2,15 +2,15 @@ import {wrapper} from '../store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import { ConfigProvider } from 'antd';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress';
-import { Head } from 'next/head';
 
 import 'antd/dist/antd.variable.min.css';
 import "../styles/index.scss";
 import 'nprogress/nprogress.css';
 import { useEffect } from 'react';
 import { getMe } from '../store/auth/actions';
+import http from '../libs/http';
 
 ConfigProvider.config({
   theme: {
@@ -36,6 +36,24 @@ function App({ Component, pageProps }) {
       dispatch(getMe());
     }
   }, [user])
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const code = router.query.t;
+    const campaign = localStorage.getItem('campaign');
+
+    if (code && !campaign) {
+      http.get(`/tracking/${code}`)
+        .then(() => {
+          localStorage.setItem('campaign', JSON.stringify({
+            code,
+            date: Date.now()
+          }))
+        });
+    }
+  }, [])
+
 
   return <ReactReduxContext.Consumer>
       {({store}) => (
