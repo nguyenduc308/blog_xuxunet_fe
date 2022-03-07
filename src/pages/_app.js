@@ -39,21 +39,19 @@ function App({ Component, pageProps }) {
   }, [user])
 
   useEffect(() => {
-    setTimeout(() => {
-      const code = router.query.t;
-      const campaign = localStorage.getItem('campaign');
+    const code = router.query.t;
+    const campaign = localStorage.getItem('campaign');
 
-      if (code && !campaign) {
-        http.get(`/tracking/${code}`)
-          .then(() => {
-            localStorage.setItem('campaign', JSON.stringify({
-              code,
-              date: Date.now()
-            }))
-          });
-      }
-    }, 1000)
-  }, [])
+    if (code && !campaign) {
+      http.get(`/tracking/${code}`)
+        .then(() => {
+          localStorage.setItem('campaign', JSON.stringify({
+            code,
+            date: Date.now()
+          }))
+        });
+    }
+  }, [router.isReady, router.query])
 
 
   return <ReactReduxContext.Consumer>
