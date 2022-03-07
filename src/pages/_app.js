@@ -30,6 +30,7 @@ function App({ Component, pageProps }) {
   const Layout = Component.Layout ? Component.Layout : NoopLayout;
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth?.user);
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) {
@@ -37,21 +38,21 @@ function App({ Component, pageProps }) {
     }
   }, [user])
 
-  const router = useRouter();
-
   useEffect(() => {
-    const code = router.query.t;
-    const campaign = localStorage.getItem('campaign');
+    setTimeout(() => {
+      const code = router.query.t;
+      const campaign = localStorage.getItem('campaign');
 
-    if (code && !campaign) {
-      http.get(`/tracking/${code}`)
-        .then(() => {
-          localStorage.setItem('campaign', JSON.stringify({
-            code,
-            date: Date.now()
-          }))
-        });
-    }
+      if (code && !campaign) {
+        http.get(`/tracking/${code}`)
+          .then(() => {
+            localStorage.setItem('campaign', JSON.stringify({
+              code,
+              date: Date.now()
+            }))
+          });
+      }
+    }, 1000)
   }, [])
 
 
