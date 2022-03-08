@@ -4,6 +4,7 @@ import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import { ConfigProvider } from 'antd';
 import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress';
+import Head from "next/head";
 
 import 'antd/dist/antd.variable.min.css';
 import "../styles/index.scss";
@@ -56,13 +57,19 @@ function App({ Component, pageProps }) {
 
   return <ReactReduxContext.Consumer>
       {({store}) => (
-        <PersistGate persistor={store.__PERSISTOR} loading={<div>Loading</div>}>
-          <ConfigProvider>
-            <Layout>
-                <Component {...pageProps}/>
-            </Layout>
-          </ConfigProvider>
-        </PersistGate>
+        <>
+          <Head>
+            <title>Xuxunet.Com</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+          </Head>
+          <PersistGate persistor={store.__PERSISTOR} loading={<div>Loading</div>}>
+            <ConfigProvider>
+              <Layout>
+                  <Component {...pageProps}/>
+              </Layout>
+            </ConfigProvider>
+          </PersistGate>
+        </>
       )}
     </ReactReduxContext.Consumer>
   ;

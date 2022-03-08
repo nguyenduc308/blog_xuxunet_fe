@@ -12,7 +12,11 @@ const Menu = (props) => {
       path: '/bai-viet'
     },
     {
-      label: 'Công cụ đầu tư',
+      label: 'Quản lý thu nhập',
+      path: '/quan-ly-thu-nhap-ca-nhan'
+    },
+    {
+      label: 'Tính lãi đầu tư',
       path: '/tinh-lai-suat-kep-dau-tu-moi-thang'
     },
   ];

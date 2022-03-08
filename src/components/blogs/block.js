@@ -1,3 +1,7 @@
+import 'katex/dist/katex.min.css';
+import { BlockMath } from 'react-katex';
+
+
 const BlockHtml = ({ block }) => {
   if (block.type === 'paragraph') {
     return <p dangerouslySetInnerHTML={{ __html: block.data.text }}></p>;
@@ -5,6 +9,10 @@ const BlockHtml = ({ block }) => {
 
   if (block.type === 'image') {
     return <img src={block.data.file.url} />;
+  }
+
+  if (block.type === 'math') {
+    return <BlockMath math={block.data.tex}></BlockMath>;
   }
 
   if (block.type === 'list') {

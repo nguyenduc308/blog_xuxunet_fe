@@ -1,0 +1,114 @@
+.milk-bottle {
+	// width: 50px;
+	height: 100px;
+}
+
+.mask-rect {
+    transition: height 2s ease;
+}
+
+.board {
+    width: 100%;
+    margin-top: 1rem;
+
+    .text-danger {
+        color: rgb(219, 62, 0);
+    }
+
+    .text-warning {
+        color: rgb(252, 203, 0);
+    }
+    .text-success {
+        color: green;
+    }
+}
+
+.bottles {
+    display: flex;
+    flex-wrap: wrap;
+    .bottle {
+        flex: 0 0 30%;
+        margin-left: 1rem;
+        margin-top: 1rem;
+        position: relative;
+
+        .delete {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: #ccc;
+            cursor: pointer;
+            display: none;
+        }
+        .ant-card-body {
+            padding: 1rem;
+        }
+
+        &:hover {
+            .delete {
+                display: block;
+            }
+        }
+    }
+    .add-more {
+        cursor: pointer;
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            user-select: none;
+            height: 100%;
+            width: 100%;
+            span {
+                padding-left: 10px;
+            }
+        }
+    }
+
+    .bottle-header {
+        display: flex;
+        justify-content: space-between;
+    }
+    .input-name {
+        outline: none;
+        border: none;
+        font-weight: bold;
+    }
+    .color-picker {
+        position: absolute;
+        z-index: 100;
+        right: 10px;
+        top: 50px;
+    }
+    .color-picked {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        margin-left: 20px;
+    }
+
+    .jar {
+        .top {
+            display: flex;
+            .percent-input {
+                width: 50%;
+                float: right;
+                border: none;
+                input {
+                    color: currentColor;
+                    text-align: center;
+                    border: none;
+                    font-weight: bold;
+                    font-size: 25px;
+                }
+            }
+        }
+
+        .bottom {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+    }
+}

@@ -9,7 +9,7 @@ import Header from '@editorjs/header';
 import Quote from '@editorjs/quote';
 import Delimiter from '@editorjs/delimiter';
 import InlineCode from '@editorjs/inline-code';
-
+import MathTool from 'editorjs-maths'
 
 const CustomEditor = ({ data, onChange }) => {
   const TOOLS = {
@@ -40,6 +40,7 @@ const CustomEditor = ({ data, onChange }) => {
       },
       shortcut: 'CMD+SHIFT+Q',
     },
+    math: MathTool,
     delimiter: Delimiter,
     inlineCode: InlineCode,
   };
