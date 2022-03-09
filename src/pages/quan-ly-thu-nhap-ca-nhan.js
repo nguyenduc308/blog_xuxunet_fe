@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
-import axios from 'axios';
-import { Card, Button, Input, Row, Col, Tabs } from 'antd';
+import { Card, Button, Input, Row, Col, Tabs, Modal } from 'antd';
 import { CompactPicker } from 'react-color'
 import { FaPlus, FaTimes } from 'react-icons/fa';
 
 import { formatCurrency } from '../helpers/currency';
 import { DefaultLayout } from '../components/layouts';
 import http from '../libs/http';
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+
 const unit = (price) => {
     return price >= 1000 ? 'tỷ' : 'triệu';
 }
@@ -18,13 +20,16 @@ const PersonalFinance = () => {
         income: 20,
     });
     const [result, setResult] = useState(null);
-
+    const [isModalRequiredLoginVisible, setIsModalRequiredLoginVisible] = useState(false);
     const onChange = (e) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value.replace(/[^0-9\.]/, '')
         })
     }
+    const {user} = useSelector(s => s.auth || {});
+
+    const router = useRouter();
 
     const onTabClick = (key) => {
     }
@@ -121,7 +126,7 @@ const PersonalFinance = () => {
 
     useEffect(() => {
         const percentCount = jars.reduce((count, jar) => (isNaN(jar.percent) ? 0 : Number(jar.percent))  + count,0);
-        
+
         let percentCountClassName = 'text-success';
         if (percentCount > 100) {
             percentCountClassName = 'text-danger';
@@ -136,12 +141,34 @@ const PersonalFinance = () => {
         });
     }, [jars]);
 
+    useEffect(() => {
+      http.get('/jar-sheets', {
+        name: 'Bảng 1',
+        description: '',
+        income: 23,
+        index: 0,
+        jars,
+      })
+      .then(({data}) => {
+        setResult(data);
+      })
+    }, [])
+
     const onSubmit = () => {
-        http.post('/rates', Object.entries(form).reduce((acc, [key, value]) => ({
-            ...acc, [key]: Number(value)
-        }), {}))
-            .then(({data}) => {
-                setResult(data);
+        if (!user) {
+          setIsModalRequiredLoginVisible(true);
+          return;
+        }
+
+        http.post('/jar-sheets', {
+          name: 'Bảng 1',
+          description: '',
+          income: 23,
+          index: 0,
+          jars,
+        })
+        .then(({data}) => {
+          setResult(data);
         })
     }
 
@@ -179,6 +206,14 @@ const PersonalFinance = () => {
                     <Col span={24} md={{span: 18}} className="result">
                     <Tabs defaultActiveKey="table" type="card" size="large" onTabClick={onTabClick}>
                         <Tabs.TabPane tab="Bảng 1" key="table">
+                          <div className="pane-wrapper">
+                            <div className="pane-header">
+                              <div className="pane-header-left">
+                                <Button type="primary" size="large" onClick={onSubmit}>Lưu lại</Button>
+                              </div>
+                              <div className="panel-header-right">
+                              </div>
+                            </div>
                             <div className="bottles">
                             {
                                 jars.map((jar, index) => {
@@ -196,7 +231,7 @@ const PersonalFinance = () => {
                                                 </div>
                                             </div>
                                         </div>
-                          
+
                                     } key={index}>
                                         <div className="jar">
                                             <div className="top">
@@ -230,15 +265,27 @@ const PersonalFinance = () => {
                                 </div>
                             </Card>
                             </div>
+                          </div>
                         </Tabs.TabPane>
                         {/* <Tabs.TabPane tab="Bảng 2" key="chart">
-                            
+
                         </Tabs.TabPane> */}
                         </Tabs>
                     </Col>
                 </Row>
             </div>
         </div>
+
+        <Modal
+        title="Yêu cầu đăng nhập"
+        visible={isModalRequiredLoginVisible}
+        onOk={() => {setIsModalRequiredLoginVisible(false); router.push('/auth/login')}}
+        onCancel={() => setIsModalRequiredLoginVisible(false)}
+        okText="Đăng nhập"
+        cancelText="Để sau"
+        >
+            <p>Bạn phải đăng nhập để tạo mới 1 kế hoạch riêng</p>
+        </Modal>
         </>
     )
 }

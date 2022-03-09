@@ -5,8 +5,8 @@
         height: 500px;
         padding-top: 100px;
         padding-right: 200px;
-        border-left: 1px solid currentColor;
-        border-bottom: 1px solid currentColor;
+        border-left: 1px solid $primary-color;
+        border-bottom: 1px solid $primary-color;
         width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
@@ -16,11 +16,11 @@
         &::-webkit-scrollbar {
             display: none;
         }
-    
+
         .chart-line {
             cursor: pointer;
             width: 50px;
-            background: currentColor;
+            background: $primary-color;
             margin-left: 10px;
             position: relative;
             transition: height 0.5s ease;
@@ -43,7 +43,7 @@
                 z-index: 100;
                 box-shadow: 1px 1px 3px #ccc;
             }
-            
+
             &:hover {
                 background: rgb(255 167 8);
 
@@ -51,7 +51,7 @@
                     visibility: visible;
                 }
             }
-    
+
             .num {
                 width: 100%;
                 font-size: 12px;
@@ -65,14 +65,14 @@
             }
         }
     }
-    
+
     .bar-chart-bottom {
         display: flex;
-        
+
         .bar-chart-row-item {
             flex: 0 0 50px;
             margin-left: 10px;
-            color: #333; 
+            color: #333;
             user-select: none;
             text-align: center;
 
