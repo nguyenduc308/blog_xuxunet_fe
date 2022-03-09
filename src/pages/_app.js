@@ -62,7 +62,7 @@ function App({ Component, pageProps }) {
             <title>Xuxunet.Com</title>
             <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
             <meta name="description" content="Tạo kế hoạch tiết kiệm, đầu tư tích lũy tài sản, làm giàu, kiến thức đầu tư chứng khoán, tiền điện tử" />
-            <meta property="og:title" content={`Kế hoạch làm giàu | ${process.env.SITE_DOMAIN}`} />
+            {/* <meta property="og:title" content={`Kế hoạch làm giàu | ${process.env.SITE_DOMAIN}`} /> */}
             <meta
                 property="og:description"
                 content="Tạo kế hoạch tiết kiệm, đầu tư tích lũy tài sản, làm giàu, kiến thức đầu tư chứng khoán, tiền điện tử"
