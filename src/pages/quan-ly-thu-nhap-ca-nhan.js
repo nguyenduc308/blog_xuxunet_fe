@@ -46,25 +46,25 @@ const PersonalFinance = () => {
             id: 2,
             name: "Giáo dục",
             percent: 10,
-            color: '#5300eb',
+            color: '#1890ff',
         },
         {
             id: 3,
             name: "Tiết kiệm",
             percent: 10,
-            color: '#db3e00',
+            color: '#1890ff',
         },
         {
             id: Math.random(),
             name: "Hiếu hỉ",
             percent: 10,
-            color: '#fccb00',
+            color: '#1890ff',
         },
         {
             id: Math.random(),
             name: "Từ thiện",
             percent: 5,
-            color: '#006b76',
+            color: '#1890ff',
         },
     ]);
 

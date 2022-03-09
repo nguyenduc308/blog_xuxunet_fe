@@ -32,6 +32,11 @@
         margin-top: 1rem;
         position: relative;
 
+        @media screen and (max-width: #{$md - 1px}) {
+            flex: 0 0 100%;
+            margin-left: 0rem;
+        }
+
         .delete {
             position: absolute;
             bottom: 10px;
