@@ -218,9 +218,9 @@ const PersonalFinance = () => {
                             </Card>
                             </div>
                         </Tabs.TabPane>
-                        <Tabs.TabPane tab="Bảng 2" key="chart">
+                        {/* <Tabs.TabPane tab="Bảng 2" key="chart">
                             
-                        </Tabs.TabPane>
+                        </Tabs.TabPane> */}
                         </Tabs>
                     </Col>
                 </Row>

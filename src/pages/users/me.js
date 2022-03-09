@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import jwtDecode from 'jwt-decode';
 import {wrapper} from '../../store';
 
 import { checkServerSideCookie, serverSideRedirect } from '../../helpers/auth';
