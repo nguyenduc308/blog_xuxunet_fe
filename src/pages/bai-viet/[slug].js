@@ -63,7 +63,21 @@ const BlogDetail = ({ blog, comments: initcomments }) => {
   return (
   <>
     <Head>
-      <title>{blog.title}</title>
+      <title>
+        {blog.title} | {process.env.SITE_DOMAIN}
+      </title>
+      <meta name="description" content={blog.excerpt} />
+      <link rel="canonical" href={`${process.env.SITE_URL || ''}/bai-viet/${blog.slug}`} />
+      <meta property="og:title" content={`${blog.title} | ${process.env.SITE_DOMAIN}`} />
+      <meta property="og:description" content={blog.excerpt} />
+      <meta property="og:type" content="webiste" />
+      <meta property="og:url" content={`${process.env.SITE_URL || ''}blogs/${blog.slug}`} />
+      <meta property="og:site_name" content={`${process.env.SITE_DOMAIN}`} />
+
+      <meta property="og:image" content={`${process.env.SITE_URL}/${blog.featured_image_url || '/logo.png'}`} />
+      <meta property="og:image:secure_url" content={`${process.env.SITE_URL}/${blog.featured_image_url || '/logo.png'}`} />
+      <meta property="og:image:type" content="image/jpg" />
+      {/* <meta property="fb:app_id" content={`${'123124'}`} /> */}
     </Head>
     <article className="blog-detail">
       <h2 className="blog-detail__title">{blog.title}</h2>

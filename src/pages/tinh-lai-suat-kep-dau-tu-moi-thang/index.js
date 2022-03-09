@@ -74,7 +74,20 @@ const RateCaculator = () => {
     return (
         <>
         <Head>
-            <title>Tính lãi suất kép cộng dồn tích lũy mỗi tháng</title>
+            <title>
+                Tính lãi suất kép cộng dồn tích lũy mỗi tháng | {process.env.SITE_DOMAIN}
+            </title>
+            <meta name="description" content={"Cách tính lãi suất kép sau khi đầu tư mỗi tháng sau 10 năm, 20 năm"} />
+            <link rel="canonical" href={`${process.env.SITE_URL || ''}/bai-viet/${blog.slug}`} />
+            <meta property="og:title" content={`${"Cách tính lãi suất kép sau khi đầu tư mỗi tháng sau 10 năm, 20 năm"} | ${process.env.SITE_DOMAIN}`} />
+            <meta property="og:description" content={"Cách tính lãi suất kép sau khi đầu tư mỗi tháng sau 10 năm, 20 năm"} />
+            <meta property="og:type" content="webiste" />
+            <meta property="og:url" content={`${process.env.SITE_URL || ''}/${'tinh-lai-suat-kep-dau-tu-moi-thang'}`} />
+            <meta property="og:site_name" content={`${process.env.SITE_DOMAIN}`} />
+
+            <meta property="og:image" content={`${'/logo.png'}`} />
+            <meta property="og:image:secure_url" content={`${'/logo.png'}`} />
+            <meta property="og:image:type" content="image/jpg" />
         </Head>
         <div>
             <h2 className="text-center">Tính lãi suất kép cộng dồn đầu tư mỗi tháng</h2>

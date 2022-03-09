@@ -61,6 +61,17 @@ function App({ Component, pageProps }) {
           <Head>
             <title>Xuxunet.Com</title>
             <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+            <meta name="description" content="Tạo kế hoạch tiết kiệm, đầu tư tích lũy tài sản, làm giàu, kiến thức đầu tư chứng khoán, tiền điện tử" />
+            <meta property="og:title" content={`Kế hoạch làm giàu | ${process.env.SITE_DOMAIN}`} />
+            <meta
+                property="og:description"
+                content="Tạo kế hoạch tiết kiệm, đầu tư tích lũy tài sản, làm giàu, kiến thức đầu tư chứng khoán, tiền điện tử"
+            />
+            <meta property="og:type" content="webiste" />
+            <meta property="og:image" content={`${process.env.SITE_URL || ''}/logo.jpg`} />
+            <meta property="og:image:secure_url" content={`${process.env.SITE_URL || ''}/logo.jpg`} />
+            <meta property="og:image:type" content="image/jpg" />
+            <link rel="icon" href="/favicon.ico" />
           </Head>
           <PersistGate persistor={store.__PERSISTOR} loading={<div>Loading</div>}>
             <ConfigProvider>

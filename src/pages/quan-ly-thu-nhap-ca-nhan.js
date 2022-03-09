@@ -148,7 +148,20 @@ const PersonalFinance = () => {
     return (
         <>
         <Head>
-            <title>Phân bổ thu nhập hiệu quả</title>
+            <title>
+                Phân bổ thu nhập hiệu quả | {process.env.SITE_DOMAIN}
+            </title>
+            <meta name="description" content={"Quản lí tài chính bằng 6 chiếc lọ, phân bổ thu nhập hiệu quả"} />
+            <link rel="canonical" href={`${process.env.SITE_URL || ''}/bai-viet/${blog.slug}`} />
+            <meta property="og:title" content={`${"Phân bổ tài chính bằng những chiếc lọ thông minh"} | ${process.env.SITE_DOMAIN}`} />
+            <meta property="og:description" content={"Quản lí tài chính bằng 6 chiếc lọ, phân bổ thu nhập hiệu quả"} />
+            <meta property="og:type" content="webiste" />
+            <meta property="og:url" content={`${process.env.SITE_URL || ''}/${'quan-ly-thu-nhap-ca-nhan'}`} />
+            <meta property="og:site_name" content={`${process.env.SITE_DOMAIN}`} />
+
+            <meta property="og:image" content={`${'/logo.png'}`} />
+            <meta property="og:image:secure_url" content={`${'/logo.png'}`} />
+            <meta property="og:image:type" content="image/jpg" />
         </Head>
         <div>
             <h2 className="text-center">Phân bổ thu nhập bằng những chiếc lọ tài chính</h2>
