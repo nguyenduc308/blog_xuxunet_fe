@@ -18,3 +18,9 @@ body {
 [class^='ant']:not(.ant-scrolling-effect) {
     font-size: 16px;
 }
+
+.confirm-no-ok {
+    .ant-btn-primary {
+        display: none;
+    }
+}

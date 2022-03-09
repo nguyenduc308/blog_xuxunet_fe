@@ -3,6 +3,7 @@ import Head from "next/head";
 import { Card, Button, Input, Row, Col, Tabs, Modal } from 'antd';
 import { CompactPicker } from 'react-color'
 import { FaPlus, FaTimes } from 'react-icons/fa';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { formatCurrency } from '../helpers/currency';
 import { DefaultLayout } from '../components/layouts';
@@ -14,27 +15,13 @@ const unit = (price) => {
     return price >= 1000 ? 'tỷ' : 'triệu';
 }
 
-
-const PersonalFinance = () => {
-    const [form, setForm] = useState({
-        income: 20,
-    });
-    const [result, setResult] = useState(null);
-    const [isModalRequiredLoginVisible, setIsModalRequiredLoginVisible] = useState(false);
-    const onChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value.replace(/[^0-9\.]/, '')
-        })
-    }
-    const {user} = useSelector(s => s.auth || {});
-
-    const router = useRouter();
-
-    const onTabClick = (key) => {
-    }
-
-    const [jars, setJars] = useState([
+const SHEET_DEFAULT = {
+    _id: null,
+    name: 'Bảng tạm',
+    description: '',
+    income: 20,
+    index: 0,
+    jars: [
         {
             id: 0,
             name: "Tiêu dùng",
@@ -71,52 +58,88 @@ const PersonalFinance = () => {
             percent: 5,
             color: '#1890ff',
         },
-    ]);
+    ]
+}
+
+
+const PersonalFinance = () => {
+    const [form, setForm] = useState({...SHEET_DEFAULT});
+    const [sheets, setSheets] = useState([{...SHEET_DEFAULT}]);
+    const [isModalRequiredLoginVisible, setIsModalRequiredLoginVisible] = useState(false);
+    const onChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value.replace(/[^0-9\.]/, '')
+        })
+    }
+    const { user } = useSelector(s => s.auth || {});
+    const router = useRouter();
 
     const [analytics, setAnalytics] = useState({
         percentCount: 0,
     });
 
+    const onTabClick = (key) => {
+        if (key) {
+            const currentForm = sheets.find((sheet) => sheet._id === key);
+
+            if (currentForm) {
+                setForm(currentForm);
+                console.log({currentForm: key})
+            }
+        }
+    }
+
     const addMoreJar = () => {
-        setJars([
-            ...jars,
-            {
-                id: Math.random(),
-                name: "Chiếc lọ thứ " + (jars.length + 1),
-                percent: 0,
-                color: '#999',
-            },
-        ])
+        setForm({
+            ...form,
+            jars: [
+                ...form.jars,
+                {
+                    _id: 'new' + Date.now(),
+                    name: "Chiếc lọ thứ " + (form.jars.length + 1),
+                    percent: 0,
+                    color: '#999',
+                },
+            ]
+        })
     }
 
     const deleteJar = (idx) => () => {
-        setJars(jars.filter(({id}) => id !== idx))
+        setForm({
+            ...form,
+            jars: form.jars.filter(({ _id }) => _id !== idx)
+        })
     }
-
     const [colorPickerId, setColorPickerId] = useState('');
-
     const changeJarAttributes = (attr, id) => (event) => {
-        setJars(jars.map(((jar, idx) => {
-            if (jar.id == id) {
-                return {
-                    ...jar,
-                    [attr]: event.target.value
+        setForm({
+            ...form,
+            jars: form.jars.map(((jar) => {
+                if (jar._id == id) {
+                    return {
+                        ...jar,
+                        [attr]: event.target.value
+                    }
                 }
-            }
-            return jar;
-        })))
+                return jar;
+            }))
+        })
     }
 
     const handleChangeColorJarComplete = (id) => (color) => {
-        setJars(jars.map(((jar, idx) => {
-            if (jar.id == id) {
-                return {
-                    ...jar,
-                    color: color.hex
+        setForm({
+            ...form,
+            jars: form.jars.map(((jar, idx) => {
+                if (jar._id == id) {
+                    return {
+                        ...jar,
+                        color: color.hex
+                    }
                 }
-            }
-            return jar;
-        })))
+                return jar;
+            }))
+        })
     }
 
     const showColorPicker = (id) => (event) => {
@@ -125,7 +148,7 @@ const PersonalFinance = () => {
     }
 
     useEffect(() => {
-        const percentCount = jars.reduce((count, jar) => (isNaN(jar.percent) ? 0 : Number(jar.percent))  + count,0);
+        const percentCount = form.jars.reduce((count, jar) => (isNaN(jar.percent) ? 0 : Number(jar.percent)) + count, 0);
 
         let percentCountClassName = 'text-success';
         if (percentCount > 100) {
@@ -139,153 +162,202 @@ const PersonalFinance = () => {
             percentCount,
             percentCountClassName
         });
-    }, [jars]);
+    }, [form.jars]);
 
     useEffect(() => {
-      http.get('/jar-sheets', {
-        name: 'Bảng 1',
-        description: '',
-        income: 23,
-        index: 0,
-        jars,
-      })
-      .then(({data}) => {
-        setResult(data);
-      })
-    }, [])
+        if (user) {
+            http.get('/jar-sheets', form)
+            .then(({ data }) => {
+                if (data.length) {
+                    setSheets(data);
+                    setForm({...data[0]})
+                } else {
+                    setSheets([{...SHEET_DEFAULT}]);
+                    setForm({...SHEET_DEFAULT}) 
+                }
+            })
+        } else {
+            setSheets([{...SHEET_DEFAULT}]);
+            setForm({...SHEET_DEFAULT})
+        }
+    }, [user])
 
     const onSubmit = () => {
         if (!user) {
-          setIsModalRequiredLoginVisible(true);
-          return;
+            setIsModalRequiredLoginVisible(true);
+            return;
         }
 
-        http.post('/jar-sheets', {
-          name: 'Bảng 1',
-          description: '',
-          income: 23,
-          index: 0,
-          jars,
-        })
-        .then(({data}) => {
-          setResult(data);
-        })
+        if (!form._id) {
+            http.post('/jar-sheets', form)
+            .then(({ data }) => {
+                // setResult(data);
+                window.location.reload();
+            })
+        } else {
+            http.put('/jar-sheets/' + form._id, form)
+            .then(({ data }) => {
+                // setResult(data);
+                window.location.reload();
+            }) 
+        }
+    }
+
+    const onEdit = (targetKey, action) => {
+        console.log(action,  targetKey)
+        if (action === 'remove') {
+            if (targetKey !== 'null') {
+                Modal.confirm({
+                    title: 'Xác nhận',
+                    icon: <ExclamationCircleOutlined />,
+                    content: 'Sau khi xóa không thể khôi phục, bạn có chắc muốn xóa không ?',
+                    okText: 'Đồng ý',
+                    cancelText: 'Thoát',
+                    okType:"danger",
+                    onOk: () => {
+                        http.delete('/jar-sheets/' + targetKey).then(() => {
+                            // const newList = sheets.filter((sheet) => sheet._id !== targetKey);
+                            // setSheets(newList);
+                            // if (targetKey === form._id) {
+                            //     if (newList.length) {
+                            //         setForm({...newList[0]})
+                            //     } else {
+                            //         setForm(...SHEET_DEFAULT);
+                            //     }
+                            // }
+                            window.location.reload();
+                        }).catch(() => {})
+                    }
+                });
+            } else {
+                Modal.confirm({
+                    title: 'Thông báo',
+                    icon: <ExclamationCircleOutlined />,
+                    content: 'Bạn chưa lưu bảng này',
+                    cancelText: 'Thoát',
+                    className: 'confirm-no-ok'
+                });
+            }
+        }
     }
 
     return (
         <>
-        <Head>
-            <title>
-                Phân bổ thu nhập hiệu quả | {process.env.SITE_DOMAIN}
-            </title>
-            <meta name="description" content={"Quản lí tài chính bằng 6 chiếc lọ, phân bổ thu nhập hiệu quả"} />
-            <link rel="canonical" href={`${process.env.SITE_URL || ''}/${'quan-ly-thu-nhap-ca-nhan'}`} />
-            <meta property="og:title" content={`${"Phân bổ tài chính bằng những chiếc lọ thông minh"} | ${process.env.SITE_DOMAIN}`} />
-            <meta property="og:description" content={"Quản lí tài chính bằng 6 chiếc lọ, phân bổ thu nhập hiệu quả"} />
-            <meta property="og:type" content="webiste" />
-            <meta property="og:url" content={`${process.env.SITE_URL || ''}/${'quan-ly-thu-nhap-ca-nhan'}`} />
-            <meta property="og:site_name" content={`${process.env.SITE_DOMAIN}`} />
+            <Head>
+                <title>
+                    Phân bổ thu nhập hiệu quả | {process.env.SITE_DOMAIN}
+                </title>
+                <meta name="description" content={"Quản lí tài chính bằng 6 chiếc lọ, phân bổ thu nhập hiệu quả"} />
+                <link rel="canonical" href={`${process.env.SITE_URL || ''}/${'quan-ly-thu-nhap-ca-nhan'}`} />
+                <meta property="og:title" content={`${"Phân bổ tài chính bằng những chiếc lọ thông minh"} | ${process.env.SITE_DOMAIN}`} />
+                <meta property="og:description" content={"Quản lí tài chính bằng 6 chiếc lọ, phân bổ thu nhập hiệu quả"} />
+                <meta property="og:type" content="webiste" />
+                <meta property="og:url" content={`${process.env.SITE_URL || ''}/${'quan-ly-thu-nhap-ca-nhan'}`} />
+                <meta property="og:site_name" content={`${process.env.SITE_DOMAIN}`} />
 
-            <meta property="og:image" content={`${'/logo.png'}`} />
-            <meta property="og:image:secure_url" content={`${'/logo.png'}`} />
-            <meta property="og:image:type" content="image/jpg" />
-        </Head>
-        <div>
-            <h2 className="text-center">Phân bổ thu nhập bằng những chiếc lọ tài chính</h2>
-            <div className="mt-2">
-                <Row className="rates">
-                    <Col span={24} md={{span: 6}} className="controls">
-                        <div className="mt-1">
-                            <div>Thu nhập mỗi tháng: </div>
-                            <Input className="w-100" value={form.income} onChange={onChange} name="income" suffix={<span style={{color: '#999'}}>triệu</span>}/>
-                        </div>
-                        <Card className="board" title="Thống kê">
-                            <p className="bold">Tổng: <span className={analytics.percentCountClassName}>{analytics.percentCount}%</span></p>
-                        </Card>
-                    </Col>
-                    <Col span={24} md={{span: 18}} className="result">
-                    <Tabs defaultActiveKey="table" type="card" size="large" onTabClick={onTabClick}>
-                        <Tabs.TabPane tab="Bảng 1" key="table">
-                          <div className="pane-wrapper">
-                            <div className="pane-header">
-                              <div className="pane-header-left">
-                                <Button type="primary" size="large" onClick={onSubmit}>Lưu lại</Button>
-                              </div>
-                              <div className="panel-header-right">
-                              </div>
-                            </div>
-                            <div className="bottles">
-                            {
-                                jars.map((jar, index) => {
-                                    return <Card className="bottle" title={
-                                        <div className="bottle-header">
-                                            <Input value={jar.name} className="input-name" onChange={changeJarAttributes('name', jar.id)}/>
-                                            <div>
-                                                <div className="color-picked" style={{backgroundColor: jar.color}} onClick={showColorPicker(jar.id)}></div>
-                                                <div className="color-picker">
-                                                    {colorPickerId === jar.id && <CompactPicker
-                                                        triangle="hide"
-                                                        color={ jar.color }
-                                                        onChangeComplete={handleChangeColorJarComplete(jar.id)}
-                                                    />}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    } key={index}>
-                                        <div className="jar">
-                                            <div className="top">
-                                                <svg className="milk-bottle" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 51">
-                                                    <defs>
-                                                        <mask id={`milk-mask-${index}`}>
-                                                            <rect className="mask-rect" x="477" y="108" width="15" height={`${jar.percent}%`} transform="rotate(-180 247.5 78.5)" fill={jar.color} />
-                                                        </mask>
-                                                    </defs>
-                                                    <path className="bottle" d="M19 21.1L15 8.74V6a2.3 2.3 0 0 0-.14-.9 1.54 1.54 0 0 0 .14-.65V3c0-.85-.35-1.5-1.19-1.5H7.86C7.02 1.5 6 2.15 6 3v1.47a1.55 1.55 0 0 0 .22.79 1.32 1.32 0 0 0-.22.76v2.72L2 21.09a12.12 12.12 0 0 0-.51 3.21v22.1a3.29 3.29 0 0 0 3.15 3.1h12a2.92 2.92 0 0 0 2.85-3.1V24.3a12.14 12.14 0 0 0-.49-3.2zM7.69 3h5.81v1.47a3.12 3.12 0 0 0 .31.08h-.08l-6-.05zM18 46.4a1.63 1.63 0 0 1-1.4 1.58H4.65C3.93 47.98 3 46.85 3 46.4V24.3a11 11 0 0 1 .61-2.73L7.72 9.1l.08-3a3.72 3.72 0 0 1 .88-.06h4.82v2.79l4.06 12.71a10.67 10.67 0 0 1 .44 2.73z" fill={jar.color} />
-                                                    <path className="milk" mask={`url(#milk-mask-${index})`} d="M4.5 46.5v-23l4-14h4l4 14v23" fill={jar.color} />
-                                                </svg>
-                                                <div>
-                                                    <Input className="percent-input" type="text" style={{color: jar.color}} value={jar.percent} onChange={changeJarAttributes('percent', jar.id)} suffix={<span>%</span>}/>
-                                                </div>
-                                            </div>
-                                            <div className="bottom" style={{color: jar.color}}>
-                                                {formatCurrency(Math.round(form.income * 1000000 * jar.percent / 100))} đ
-                                            </div>
-                                            <div className="delete" onClick={deleteJar(jar.id)}>
-                                                <FaTimes />
-                                            </div>
-                                        </div>
+                <meta property="og:image" content={`${'/logo.png'}`} />
+                <meta property="og:image:secure_url" content={`${'/logo.png'}`} />
+                <meta property="og:image:type" content="image/jpg" />
+            </Head>
+            <div>
+                <h2 className="text-center">Phân bổ thu nhập bằng những chiếc lọ tài chính</h2>
+                <div className="mt-2">
+                    <Tabs
+                    defaultActiveKey="table" 
+                    type={user ? 'editable-card' : 'card'} 
+                    size="large" 
+                    onTabClick={onTabClick}
+                    onEdit={onEdit}
+                    >
+                        {sheets.map((sheet) => <Tabs.TabPane tab={sheet.name} key={sheet._id}>
+                            <Row className="rates">
+                                <Col span={24} md={{ span: 6 }} className="controls">
+                                    <div className="mt-1">
+                                        <div>Thu nhập mỗi tháng: </div>
+                                        <Input className="w-100" value={form.income} onChange={onChange} name="income" suffix={<span style={{ color: '#999' }}>triệu</span>} />
+                                    </div>
+                                    <Card className="board" title="Thống kê">
+                                        <p className="bold">Tổng: <span className={analytics.percentCountClassName}>{analytics.percentCount}%</span></p>
                                     </Card>
-                                })
-                            }
-                            <Card className="bottle add-more" onClick={addMoreJar}>
-                                <div>
-                                    <FaPlus />
-                                    <span>Tạo thêm</span>
-                                </div>
-                            </Card>
-                            </div>
-                          </div>
-                        </Tabs.TabPane>
-                        {/* <Tabs.TabPane tab="Bảng 2" key="chart">
+                                    <Button type="primary" size="large" onClick={onSubmit} style={{marginTop: 20}}>Lưu lại</Button>
+                                </Col>
+                                <Col span={24} md={{ span: 18 }} className="result">
+                                    <div className="pane-wrapper">
+                                        {/* <div className="pane-header">
+                                            <div className="pane-header-left">
+                                            </div>
+                                            <div className="panel-header-right">
+                                            </div>
+                                        </div> */}
+                                        <div className="bottles">
+                                            {
+                                                form.jars.map((jar, index) => {
+                                                    return <Card className="bottle" title={
+                                                        <div className="bottle-header">
+                                                            <Input value={jar.name} className="input-name" onChange={changeJarAttributes('name', jar._id)} />
+                                                            <div>
+                                                                <div className="color-picked" style={{ backgroundColor: jar.color }} onClick={showColorPicker(jar._id)}></div>
+                                                                <div className="color-picker">
+                                                                    {colorPickerId === jar._id && <CompactPicker
+                                                                        triangle="hide"
+                                                                        color={jar.color}
+                                                                        onChangeComplete={handleChangeColorJarComplete(jar._id)}
+                                                                    />}
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
-                        </Tabs.TabPane> */}
-                        </Tabs>
-                    </Col>
-                </Row>
+                                                    } key={index}>
+                                                        <div className="jar">
+                                                            <div className="top">
+                                                                <svg className="milk-bottle" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 51">
+                                                                    <defs>
+                                                                        <mask id={`milk-mask-${index}`}>
+                                                                            <rect className="mask-rect" x="477" y="108" width="15" height={`${jar.percent}%`} transform="rotate(-180 247.5 78.5)" fill={jar.color} />
+                                                                        </mask>
+                                                                    </defs>
+                                                                    <path className="bottle" d="M19 21.1L15 8.74V6a2.3 2.3 0 0 0-.14-.9 1.54 1.54 0 0 0 .14-.65V3c0-.85-.35-1.5-1.19-1.5H7.86C7.02 1.5 6 2.15 6 3v1.47a1.55 1.55 0 0 0 .22.79 1.32 1.32 0 0 0-.22.76v2.72L2 21.09a12.12 12.12 0 0 0-.51 3.21v22.1a3.29 3.29 0 0 0 3.15 3.1h12a2.92 2.92 0 0 0 2.85-3.1V24.3a12.14 12.14 0 0 0-.49-3.2zM7.69 3h5.81v1.47a3.12 3.12 0 0 0 .31.08h-.08l-6-.05zM18 46.4a1.63 1.63 0 0 1-1.4 1.58H4.65C3.93 47.98 3 46.85 3 46.4V24.3a11 11 0 0 1 .61-2.73L7.72 9.1l.08-3a3.72 3.72 0 0 1 .88-.06h4.82v2.79l4.06 12.71a10.67 10.67 0 0 1 .44 2.73z" fill={jar.color} />
+                                                                    <path className="milk" mask={`url(#milk-mask-${index})`} d="M4.5 46.5v-23l4-14h4l4 14v23" fill={jar.color} />
+                                                                </svg>
+                                                                <div>
+                                                                    <Input className="percent-input" type="text" style={{ color: jar.color }} value={jar.percent} onChange={changeJarAttributes('percent', jar._id)} suffix={<span>%</span>} />
+                                                                </div>
+                                                            </div>
+                                                            <div className="bottom" style={{ color: jar.color }}>
+                                                                {formatCurrency(Math.round(form.income * 1000000 * jar.percent / 100))} đ
+                                                            </div>
+                                                            <div className="delete" onClick={deleteJar(jar._id)}>
+                                                                <FaTimes />
+                                                            </div>
+                                                        </div>
+                                                    </Card>
+                                                })
+                                            }
+                                            <Card className="bottle add-more" onClick={addMoreJar}>
+                                                <div>
+                                                    <FaPlus />
+                                                    <span>Tạo thêm</span>
+                                                </div>
+                                            </Card>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Tabs.TabPane>)}
+                    </Tabs>
+                </div>
             </div>
-        </div>
 
-        <Modal
-        title="Yêu cầu đăng nhập"
-        visible={isModalRequiredLoginVisible}
-        onOk={() => {setIsModalRequiredLoginVisible(false); router.push('/auth/login')}}
-        onCancel={() => setIsModalRequiredLoginVisible(false)}
-        okText="Đăng nhập"
-        cancelText="Để sau"
-        >
-            <p>Bạn phải đăng nhập để tạo mới 1 kế hoạch riêng</p>
-        </Modal>
+            <Modal
+                title="Yêu cầu đăng nhập"
+                visible={isModalRequiredLoginVisible}
+                onOk={() => { setIsModalRequiredLoginVisible(false); router.push('/auth/login') }}
+                onCancel={() => setIsModalRequiredLoginVisible(false)}
+                okText="Đăng nhập"
+                cancelText="Để sau"
+            >
+                <p>Bạn phải đăng nhập để tạo mới 1 kế hoạch riêng</p>
+            </Modal>
         </>
     )
 }
