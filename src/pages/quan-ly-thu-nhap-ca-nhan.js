@@ -247,6 +247,12 @@ const PersonalFinance = () => {
             }) 
         }
     }
+    
+    const clickCard = () => {
+        if (colorPickerId) {
+            setColorPickerId('');
+        }
+    }
 
     return (
         <>
@@ -315,7 +321,7 @@ const PersonalFinance = () => {
                                                         </div>
 
                                                     } key={index}>
-                                                        <div className="jar">
+                                                        <div className="jar" onClick={clickCard}>
                                                             <div className="top">
                                                                 <svg className="milk-bottle" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 51">
                                                                     <defs>

@@ -36,16 +36,16 @@ const Header = () => {
             </div>
             {user && <div className="header-content-right">
                 <div className="pc">
-                  {['admin', 'mod'].includes(user.role) && <Link href="/admin">
+                  {['admin', 'mod'].includes(user.role) && (<><Link href="/admin">
                       <a>
                         Dashboard
                       </a>
-                  </Link>}
-                  {!['admin', 'mod'].includes(user.role) && <Link href="/users/me">
+                  </Link> &nbsp;/&nbsp;</>)}
+                  <Link href="/users/me">
                       <a>
                         Profile
                       </a>
-                  </Link>}
+                  </Link>
                   &nbsp;/&nbsp;
                   <span className="logout" onClick={onLogout}>
                       Logout
@@ -78,6 +78,11 @@ const Header = () => {
                       </Link>
                     </div>
                     <div className="menu-mobile-item">
+                      <Link href="/quan-ly-thu-nhap-ca-nhan">
+                        <a>Cách quản lý thu nhập</a>
+                      </Link>
+                    </div>
+                    <div className="menu-mobile-item">
                       <Link href="/bai-viet">
                         <a>Bài viết mới</a>
                       </Link>
@@ -99,16 +104,24 @@ const Header = () => {
 
                     {user &&<>
                       <div className="menu-mobile-item">
-                      {['admin', 'mod'].includes(user.role) && <Link href="/admin">
-                          <a>
-                            Dashboard
-                          </a>
-                      </Link>}
-                      {!['admin', 'mod'].includes(user.role) && <Link href="/users/me">
+                        {['admin', 'mod'].includes(user.role) && <Link href="/admin">
+                            <a>
+                              Dashboard
+                            </a>
+                        </Link>}
+                      
+                      {/* {!['admin', 'mod'].includes(user.role) && <Link href="/users/me">
                           <a>
                             Profile
                           </a>
-                      </Link>}
+                      </Link>} */}
+                      </div>
+                      <div className="menu-mobile-item">
+                        <Link href="/users/me">
+                            <a>
+                              Profile
+                            </a>
+                        </Link>
                       </div>
                       <div className="menu-mobile-item">
                         <span className="logout" onClick={onLogout}>
