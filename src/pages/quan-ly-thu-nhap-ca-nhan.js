@@ -23,37 +23,37 @@ const SHEET_DEFAULT = {
     index: 0,
     jars: [
         {
-            id: 0,
+            _id: 0,
             name: "Tiêu dùng",
             percent: 55,
             color: '#1890ff',
         },
         {
-            id: 1,
+            _id: 1,
             name: "Đầu tư",
             percent: 10,
             color: '#008b02',
         },
         {
-            id: 2,
+            _id: 2,
             name: "Giáo dục",
             percent: 10,
             color: '#1890ff',
         },
         {
-            id: 3,
+            _id: 3,
             name: "Tiết kiệm",
             percent: 10,
             color: '#1890ff',
         },
         {
-            id: Math.random(),
+            _id: Math.random(),
             name: "Hiếu hỉ",
             percent: 10,
             color: '#1890ff',
         },
         {
-            id: Math.random(),
+            _id: Math.random(),
             name: "Từ thiện",
             percent: 5,
             color: '#1890ff',
@@ -66,10 +66,11 @@ const PersonalFinance = () => {
     const [form, setForm] = useState({...SHEET_DEFAULT});
     const [sheets, setSheets] = useState([{...SHEET_DEFAULT}]);
     const [isModalRequiredLoginVisible, setIsModalRequiredLoginVisible] = useState(false);
+    const [isModalSaveSheetVisible, setIsModalSaveSheetVisible] = useState(false);
     const onChange = (e) => {
         setForm({
             ...form,
-            [e.target.name]: e.target.value.replace(/[^0-9\.]/, '')
+            [e.target.name]: e.target.value
         })
     }
     const { user } = useSelector(s => s.auth || {});
@@ -188,19 +189,7 @@ const PersonalFinance = () => {
             return;
         }
 
-        if (!form._id) {
-            http.post('/jar-sheets', form)
-            .then(({ data }) => {
-                // setResult(data);
-                window.location.reload();
-            })
-        } else {
-            http.put('/jar-sheets/' + form._id, form)
-            .then(({ data }) => {
-                // setResult(data);
-                window.location.reload();
-            }) 
-        }
+        setIsModalSaveSheetVisible(true);
     }
 
     const onEdit = (targetKey, action) => {
@@ -238,6 +227,24 @@ const PersonalFinance = () => {
                     className: 'confirm-no-ok'
                 });
             }
+        }
+    }
+
+    const onSaveJarSheet = () => {
+        if (!form._id) {
+            http.post('/jar-sheets', form)
+            .then(({ data }) => {
+                // setResult(data);
+                setIsModalSaveSheetVisible(false);
+                window.location.reload();
+            })
+        } else {
+            http.put('/jar-sheets/' + form._id, form)
+            .then(({ data }) => {
+                // setResult(data);
+                setIsModalSaveSheetVisible(false);
+                window.location.reload();
+            }) 
         }
     }
 
@@ -357,6 +364,34 @@ const PersonalFinance = () => {
                 cancelText="Để sau"
             >
                 <p>Bạn phải đăng nhập để tạo mới 1 kế hoạch riêng</p>
+            </Modal>
+
+            <Modal
+                title="Lưu bảng"
+                visible={isModalSaveSheetVisible}
+                onOk={onSaveJarSheet}
+                onCancel={() => setIsModalSaveSheetVisible(false)}
+                okText="Lưu"
+                cancelText="Thoát"
+            >
+                <div>
+                    <div>
+                        <div>
+                            Tên bảng:
+                        </div>
+                        <div>
+                            <Input name="name" value={form.name} onChange={onChange} />
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            Mô tả:
+                        </div>
+                        <div>
+                            <Input name="description" value={form.description} onChange={onChange} placeholder="Mô tả lưu trữ"/>
+                        </div>
+                    </div>
+                </div>
             </Modal>
         </>
     )
