@@ -12,19 +12,18 @@ const CATEGORY_EMPTY = {
 };
 
 const Categories = (props) => {
-    const [categories, setCategories] = useState([]);
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [category, setCategory] = useState(CATEGORY_EMPTY)
     const formRef = useRef();
 
     const onCancelModal = () => {
         setIsModalVisible(false);
     }
     const onCreateCategory = (values) => {
-        http.post('/categories', values)
+        http.post('/users', values)
         .then((res) => {
-            setCategories([...categories, res.data]);
+            setusers([...users, res.data]);
 
             if (formRef.current) {
                 formRef.current.setFieldsValue(CATEGORY_EMPTY)
@@ -37,76 +36,41 @@ const Categories = (props) => {
     const columns = [
         {
             title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'first_name',
+            key: 'first_name',
+            render: (first_name, field) => (
+                <span>
+                    {field.first_name} {field.last_name}
+                </span>
+            )
         },
         {
-            title: 'Mô tả',
-            dataIndex: 'description',
-            key: 'excerpt',
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
             width: '30%'
         },
         {
-            title: '',
-            dataIndex: '',
-            render: (author) => (
-                <>
-                    <Button type="primary" style={{ marginRight: '10px' }}>Sửa</Button>
-                    <Button type="danger">Xóa</Button>
-                </>
-            )
+            title: 'Phân loại',
+            dataIndex: 'role',
+            key: 'role',
         },
     ];
 
     useEffect(() => {
-        http.get('/categories')
+        http.get('/users')
         .then((res) => {
-            setCategories(res.data);
+            setUsers(res.data);
         })
         .finally(() => setLoading(false))
     }, []);
 
-    return (
-        <div className="admin-categories-wrapper">
-            <div className="admin-categories-wrapper__header">
-                <Button type="primary" size="large" onClick={() => setIsModalVisible(true)}>
-                    Tạo mới
-                </Button>
-            </div>
-            <Table
-                rowKey="_id"
-                columns={columns}
-                dataSource={categories || []}
-                loading={loading}
-            />
-
-            <Modal
-            title="Tạo chủ đề mới"
-            visible={isModalVisible}
-            footer={null}
-            className="admin-categories-create"
-            onCancel={onCancelModal}
-            >
-                <Form ref={formRef} onFinish={onCreateCategory} initialValues={category}>
-                    <Form.Item name="name" label="Tên" rules={[{required: true, message: 'Bắt buộc nhập tên'}]}>
-                        <Input placeholder="Tên chủ đề"/>
-                    </Form.Item>
-                    <Form.Item name="description" label="Mô tả">
-                        <Input placeholder="Mô tả"/>
-                    </Form.Item>
-                    <Form.Item name="color" label="Màu sắc">
-                        <Input placeholder="#Hex"/>
-                    </Form.Item>
-                    <Form.Item name="bg_color" label="Màu nền">
-                        <Input placeholder="#Hex"/>
-                    </Form.Item>
-                    <div className="flex-center">
-                        <Button type="primary" size="large" htmlType="submit">Tạo mới</Button>
-                    </div>
-                </Form>
-            </Modal>
-        </div>
-    );
+    return (<Table
+        rowKey="_id"
+        columns={columns}
+        dataSource={users || []}
+        loading={loading}
+    />);
 };
 
 Categories.Layout = AdminLayout;
