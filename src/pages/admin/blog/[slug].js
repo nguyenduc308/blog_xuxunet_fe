@@ -31,6 +31,14 @@ const BlogUpdate = (props) => {
   }
 
   const onFinish = (values) => {
+    let formData = {...values};
+    if (!values.featured_image_url_link) {
+      delete formData.featured_image_url_link
+    } else {
+      formData.featured_image_url = formData.featured_image_url_link;
+      delete formData.featured_image_url_link;
+    }
+
     http.put('/blogs/' + blog._id, {
       ...blog,
       ...values,
@@ -121,7 +129,7 @@ const BlogUpdate = (props) => {
                     <h3>Ảnh</h3>
                   </div>
                   <Form.Item
-                    name="featured_image_url"
+                    name="featured_image_url_link"
                     initialValue={blog.featured_image_url}
                   >
                     <Input type="text" placeholder="Nhập link ảnh"/>
