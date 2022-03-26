@@ -44,6 +44,7 @@ function AdminLayout({ children }) {
                         <Menu.Item key="/admin/blog">Danh sách</Menu.Item>
                         <Menu.Item key="/admin/blog/deleted">Đã xoá</Menu.Item>
                     </SubMenu>
+                    <Menu.Item key="/admin/comments" icon={<SettingOutlined />}>Bình luận</Menu.Item>
                     <Menu.Item key="/admin/categories" icon={<SettingOutlined />}>Chủ đề</Menu.Item>
                     <Menu.Item key="/admin/users" icon={<SettingOutlined />}>Thành viên</Menu.Item>
                     <Menu.Item key="/admin/tracking" icon={<SettingOutlined />}>Quảng bá</Menu.Item>

@@ -4,6 +4,7 @@ import { Button, Table } from 'antd';
 import http from '../../../libs/http';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const BlogList = (props) => {
   const [list, setList] = useState([]);
@@ -20,12 +21,24 @@ const BlogList = (props) => {
     router.push('/admin/blog/' + fields.slug);
   }
 
+  const handleView = (fields) => {
+    router.push('/bai-viet/' + fields.slug);
+  }
+
+
   const columns = [
       {
           title: 'Tiêu đề',
           dataIndex: 'title',
           key: 'title',
-          width: '30%'
+          width: '30%',
+          render: (title, fields) => {
+            return <>
+              <Link href={'/bai-viet/' + fields.slug}>
+                  <a>{title}</a>
+              </Link>
+            </>
+          }
       },
       {
           title: 'Mô tả',
@@ -44,8 +57,8 @@ const BlogList = (props) => {
         dataIndex: '',
         render: (author, fields) => (
           <>
-            <Button type="primary" onClick={() => handleEdit(fields)} style={{marginRight: '10px'}}>Sửa</Button>
-            <Button type="danger" onClick={() => handleSoftDelete(fields)}>Xóa</Button>
+            <Button size="small" type="primary" onClick={() => handleEdit(fields)} style={{marginRight: '10px'}}>Sửa</Button>
+            <Button size="small" type="danger" onClick={() => handleSoftDelete(fields)} style={{}}>Xóa</Button>
           </>
         )
     },
