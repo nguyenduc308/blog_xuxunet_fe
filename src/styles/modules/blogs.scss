@@ -17,6 +17,11 @@
 
     &-left {
         flex: 0 0 200px;
+        max-width: 200px;
+
+        img {
+          width: 100%;
+        }
     }
     &-right {
         flex: 1;

@@ -4,6 +4,7 @@
         display: flex;
         aside {
             flex: 0 0 250px;
+            max-width: 250px;
         }
         .content {
             flex: 1;

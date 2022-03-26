@@ -15,7 +15,7 @@ const Index = (props) => {
   return (
     <>
     <Head>
-      <title>Đầu tư để trở nên giàu có!</title>
+      <title>Chia sẻ kiến thức đầu tư | Xuxunet.Com</title>
     </Head>
       <h1 style={{'textAlign': 'center'}}>Wellcome to our platform!</h1>
     </>

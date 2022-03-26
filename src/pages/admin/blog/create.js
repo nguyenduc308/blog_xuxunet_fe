@@ -5,10 +5,15 @@ import { Button, Input, Form, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
+import { useRouter } from 'next/router';
+import { Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+
 import { AdminLayout } from '../../../components/layouts';
 import { wrapper } from '../../../store';
 import { isClient } from '../../../helpers/utils';
 import http from '../../../libs/http';
+
 
 let CustomEditor;
 if (isClient) {
@@ -21,16 +26,18 @@ if (isClient) {
 const BlogCreate = (props) => {
   const [blog, setBlog] = useState({
     title: '',
-    image_url: '',
+    featured_image_url: '',
     status: 'public',
     excerpt: '',
     categories: [],
     blocks: [],
-    show_image: true,
+    show_featured_image: true,
   });
+  const [imageBase64, setImageBase64] = useState('');
   const [categories, setCategories] = useState([]);
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const onContentChange = (editorApi, ouput) => {
     setBlog({
@@ -44,7 +51,24 @@ const BlogCreate = (props) => {
       ...blog,
       ...values,
     }).then(() => {
+      router.push('/admin/blog');
+    })
+  }
 
+  const uploadImage = ({file, onSuccess}) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    http.post('/upload/images', formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }).then((res) => {
+      onSuccess('ok');
+      setBlog({
+        ...blog,
+        featured_image_url: res.file.url
+      })
     })
   }
 
@@ -97,6 +121,24 @@ const BlogCreate = (props) => {
                     })}
                   </Select>
                 </Form.Item>
+              </div>
+
+              <div className="blog-create-item">
+                <div className="blog-create-item__header">
+                  <h3>Ảnh</h3>
+                </div>
+                <Form.Item
+                  name="featured_image_url"
+                >
+                <Input type="text" placeholder="Nhập link ảnh"/>
+                </Form.Item>
+
+                <Upload
+                  customRequest={uploadImage}
+                  maxCount={1}
+                >
+                  <Button icon={<UploadOutlined />}>Tải lên</Button>
+                </Upload>
               </div>
             </div>
         </div>

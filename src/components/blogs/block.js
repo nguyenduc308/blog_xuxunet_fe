@@ -8,7 +8,7 @@ const BlockHtml = ({ block }) => {
   }
 
   if (block.type === 'image') {
-    return <img src={block.data.file.url} />;
+    return <img src={process.env.RESOURCES_DOMAIN + block.data.file.url} className="block-image"/>;
   }
 
   if (block.type === 'math') {

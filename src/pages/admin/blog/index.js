@@ -3,15 +3,21 @@ import { AdminLayout } from '../../../components/layouts';
 import { Button, Table } from 'antd';
 import http from '../../../libs/http';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 const BlogList = (props) => {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const handleSoftDelete = (fields) => {
     http.delete(`/blogs/${fields._id}/soft-delete`).then(() => {
       setList(list.filter(({_id}) => _id !== fields._id));
     })
+  }
+
+  const handleEdit = (fields) => {
+    router.push('/admin/blog/' + fields.slug);
   }
 
   const columns = [
@@ -38,7 +44,7 @@ const BlogList = (props) => {
         dataIndex: '',
         render: (author, fields) => (
           <>
-            <Button type="primary" style={{marginRight: '10px'}}>Sửa</Button>
+            <Button type="primary" onClick={() => handleEdit(fields)} style={{marginRight: '10px'}}>Sửa</Button>
             <Button type="danger" onClick={() => handleSoftDelete(fields)}>Xóa</Button>
           </>
         )

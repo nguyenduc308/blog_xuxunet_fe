@@ -10,6 +10,7 @@ import Quote from '@editorjs/quote';
 import Delimiter from '@editorjs/delimiter';
 import InlineCode from '@editorjs/inline-code';
 import MathTool from 'editorjs-maths'
+import http from '../../../libs/http';
 
 const CustomEditor = ({ data, onChange }) => {
   const TOOLS = {
@@ -25,7 +26,11 @@ const CustomEditor = ({ data, onChange }) => {
           uploadByFile(file) {
             const formData = new FormData();
             formData.append('file', file);
-            // return axios.post('/upload/images', formData);
+            return http.post('/upload/images', formData, {
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            });
           },
         },
       },
@@ -45,12 +50,12 @@ const CustomEditor = ({ data, onChange }) => {
     inlineCode: InlineCode,
   };
 
-  return <EditorJs
+  return <>{data && <EditorJs
       tools={TOOLS}
       placeholder="Nội dung bài viết"
-      data={data || []}
+      data={{time: Date.now(), blocks: data}}
       onChange={onChange}
-    />
+    />}</>
 };
 
 export default CustomEditor;
